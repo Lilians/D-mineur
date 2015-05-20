@@ -13,13 +13,12 @@ import java.util.Observable;
  */
 public class Game extends Observable {
 
-    private Case[][] _plateau;
+    private Case[][] plateau;
 
     //notifyObservers();
-
     public Game(int hauteur, int largeur) {
 
-        _plateau = new Case[hauteur][largeur];
+        plateau = new Case[hauteur][largeur];
         //generation du plateau
     }
 
@@ -29,7 +28,7 @@ public class Game extends Observable {
     }
 
     public void actionSurLaCase(int x, int y) {
-        //action 
+        //action
 
     }
 }

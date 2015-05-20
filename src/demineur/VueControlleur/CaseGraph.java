@@ -1,5 +1,6 @@
 package demineur.VueControlleur;
 
+import demineur.Model.Case;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -13,7 +14,8 @@ import javax.swing.border.Border;
  */
 public class CaseGraph extends JPanel {
 
-    //doit referecner une Case de game ?
+    private Case maCase;
+
     public CaseGraph() {
         super();
 

@@ -22,10 +22,10 @@ import javax.swing.JMenu;
  *
  * @author frederic
  */
-public class Vue extends JFrame {
+public class GameGraph extends JFrame {
 // reference de game ?
 
-    public Vue() {
+    public GameGraph() {
         super();
 
         this.build();

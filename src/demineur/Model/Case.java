@@ -11,14 +11,14 @@ package demineur.Model;
  */
 public class Case {
 
-    private boolean _estBalisee;
-    private boolean _estMinee;
-    private int _nbBombesAutours;
+    private boolean estBalisee;
+    private boolean estMinee;
+    private int nbBombesAutours;
 
-    public Case(boolean _estBalisee, boolean _estMinee, int _nbBombesAutours) {
-        this._estBalisee = _estBalisee;
-        this._estMinee = _estMinee;
-        this._nbBombesAutours = _nbBombesAutours;
+    public Case(boolean estBalisee, boolean estMinee, int nbBombesAutours) {
+        this.estBalisee = estBalisee;
+        this.estMinee = estMinee;
+        this.nbBombesAutours = nbBombesAutours;
     }
 
     public Case() {
@@ -26,27 +26,27 @@ public class Case {
     }
 
     public boolean isEstBalisee() {
-        return _estBalisee;
+        return estBalisee;
     }
 
     public boolean isEstMinee() {
-        return _estMinee;
+        return estMinee;
     }
 
     public int getNbBombesAutours() {
-        return _nbBombesAutours;
+        return nbBombesAutours;
     }
 
-    public void setEstBalisee(boolean _estBalisee) {
-        this._estBalisee = _estBalisee;
+    public void setEstBalisee(boolean estBalisee) {
+        this.estBalisee = estBalisee;
     }
 
-    public void setEstMinee(boolean _estMinee) {
-        this._estMinee = _estMinee;
+    public void setEstMinee(boolean estMinee) {
+        this.estMinee = estMinee;
     }
 
-    public void setNbBombesAutours(int _nbBombesAutours) {
-        this._nbBombesAutours = _nbBombesAutours;
+    public void setNbBombesAutours(int nbBombesAutours) {
+        this.nbBombesAutours = nbBombesAutours;
     }
 
 }
