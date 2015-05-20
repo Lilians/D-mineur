@@ -31,6 +31,7 @@ public class GameGraph extends JFrame implements Observer {
     public GameGraph(Game game) {
         super();
         this.game = game;
+        game.initialisationObserver(this);
         this.build();
 
         addWindowListener(new WindowAdapter() {
@@ -49,7 +50,6 @@ public class GameGraph extends JFrame implements Observer {
 
     public void build() {
 
-        //JMenu jm = new JMenu();
         JMenuBar jm = new JMenuBar();
 
         JMenu m = new JMenu("Jeu");
@@ -58,6 +58,7 @@ public class GameGraph extends JFrame implements Observer {
         mi.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 game.recommencer();
+                reinit();
                 affichage();
             }
         });
@@ -73,10 +74,9 @@ public class GameGraph extends JFrame implements Observer {
 
         for (int i = 0; i < game.getHauteur(); i++) {
             for (int j = 0; j < game.getLargeur(); j++) {
-                JComponent ptest = new CaseGraph(game.getCaseAt(i, j);
+                JComponent ptest = new CaseGraph(game, i, j);
                 pan.add(ptest);
             }
-
         }
         add(pan);
 
@@ -88,11 +88,18 @@ public class GameGraph extends JFrame implements Observer {
         affichage();
     }
 
+    private void reinit() {
+
+        this.removeAll();
+        this.build();
+
+    }
+
     private void affichage() {
 
         for (int i = 0; i < game.getHauteur(); i++) {
             for (int j = 0; j < game.getLargeur(); j++) {
-                this.getComponent(i * game.getHauteur() + j * game.getLArgeur()).affichage();
+                ((CaseGraph) ((JPanel) this.getContentPane().getComponent(0)).getComponent(i * game.getHauteur() + j)).affichage();
             }
 
         }

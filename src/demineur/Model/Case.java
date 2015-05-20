@@ -23,11 +23,14 @@ public class Case {
         this.estVisible = estVisible;
     }
 
-
     public void action() {
-        // TODO
+        this.estVisible = true;
     }
-    
+
+    public void drapeau() {
+        this.drapeau = true;
+    }
+
     public boolean getDrapeau() {
         return drapeau;
     }
@@ -68,5 +71,4 @@ public class Case {
         return estVisible;
     }
 
-    
 }

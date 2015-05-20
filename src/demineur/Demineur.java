@@ -16,12 +16,11 @@ import javax.swing.SwingUtilities;
 public class Demineur {
 
     public static void main(String[] args) {
-        System.out.println("0123456789".substring(0, 2));
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 //On crée une nouvelle instance de JDialog
-                Game game = new Game(10, 10);
+                Game game = new Game(10, 10, 15);
                 GameGraph fenetre = new GameGraph(game);
                 fenetre.setVisible(true);//On la rend visible
             }

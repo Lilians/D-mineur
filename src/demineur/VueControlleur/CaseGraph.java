@@ -1,10 +1,11 @@
 package demineur.VueControlleur;
 
-import demineur.Model.Case;
+import demineur.Model.Game;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
@@ -14,11 +15,18 @@ import javax.swing.border.Border;
  */
 public class CaseGraph extends JPanel {
 
-    private Case maCase;
+    private Game game;
+    private int positionX;
+    private int positionY;
+    private JLabel label;
 
-    public CaseGraph(Case maCase) {
+    public CaseGraph(Game game, int x, int y) {
         super();
-        this.maCase = maCase;
+        label = new JLabel(" ");
+        this.add(label);
+        this.game = game;
+        this.positionX = x;
+        this.positionY = y;
         setBackground(Color.GRAY);
         Border blackline = BorderFactory.createLineBorder(Color.black, 1);
         setBorder(blackline);
@@ -44,7 +52,12 @@ public class CaseGraph extends JPanel {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 super.mouseClicked(arg0);
-                maCase.action();
+                if (arg0.getButton() == MouseEvent.BUTTON3) {
+                    game.drapeauSurLaCase(positionX, positionY);
+                } else {
+                    game.actionSurLaCase(positionX, positionY);
+                }
+
             }
 
         });
@@ -52,6 +65,14 @@ public class CaseGraph extends JPanel {
     }
 
     public void affichage() {
+
+        if (game.getCaseAt(positionX, positionY).getDrapeau()) {
+            label.setText("|>");
+        } else if (game.getCaseAt(positionX, positionY).isEstVisible()) {
+            label.setText("" + game.getCaseAt(positionX, positionY).getNbBombesAutour());
+            setBackground(Color.WHITE);
+
+        }
 
     }
 
