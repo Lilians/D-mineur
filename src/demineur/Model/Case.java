@@ -11,22 +11,28 @@ package demineur.Model;
  */
 public class Case {
 
-    private boolean estBalisee;
+    private boolean drapeau;
     private boolean estMinee;
     private int nbBombesAutours;
+    private boolean estVisible;
 
-    public Case(boolean estBalisee, boolean estMinee, int nbBombesAutours) {
-        this.estBalisee = estBalisee;
+    public Case(boolean drapeau, boolean estMinee, int nbBombesAutours, boolean estVisible) {
+        this.drapeau = drapeau;
         this.estMinee = estMinee;
         this.nbBombesAutours = nbBombesAutours;
+        this.estVisible = estVisible;
     }
 
     public Case() {
         this(false, false, 0);
     }
 
-    public boolean isEstBalisee() {
-        return estBalisee;
+    public void action() {
+        
+    }
+    
+    public boolean getDrapeau() {
+        return drapeau;
     }
 
     public boolean isEstMinee() {
@@ -37,8 +43,8 @@ public class Case {
         return nbBombesAutours;
     }
 
-    public void setEstBalisee(boolean estBalisee) {
-        this.estBalisee = estBalisee;
+    public void setEstBalisee(boolean drapeau) {
+        this.drapeau = drapeau;
     }
 
     public void setEstMinee(boolean estMinee) {
@@ -49,4 +55,13 @@ public class Case {
         this.nbBombesAutours = nbBombesAutours;
     }
 
+    public void setDrapeau(boolean drapeau) {
+        this.drapeau = drapeau;
+    }
+
+    public void setEstVisible(boolean estVisible) {
+        this.estVisible = estVisible;
+    }
+
+    
 }

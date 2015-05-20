@@ -6,6 +6,7 @@
 package demineur.Model;
 
 import java.util.Observable;
+import java.util.Random;
 
 /**
  *
@@ -14,6 +15,8 @@ import java.util.Observable;
 public class Game extends Observable {
 
     private Case[][] plateau;
+    private int hauteur; // X
+    private int largeur; // Y
 
     //notifyObservers();
     public Game(int hauteur, int largeur) {
@@ -22,13 +25,47 @@ public class Game extends Observable {
         //generation du plateau
     }
 
-    public void recommencer() {
-        //regeneration du plateau, notify observer ??
-
+    public void recommencer(int nbBombes) {
+        this.genererPlateau(nbBombes);
     }
 
     public void actionSurLaCase(int x, int y) {
         //action
 
     }
+    
+    public void genererPlateau(int nbBombes) {
+        int compteurBombe = 0;
+        Random rand = new Random() ;
+        for (int i = 0; i<hauteur; i++) {
+            for (int j=0; j<largeur; j++) {
+                if (compteurBombe < nbBombes) {
+                    
+                 //   nbBombes / (this.hauteur * this.largeur) 
+                }
+            }
+        }
+    }
+    
+    
+    // Retourne la case correspondante
+    public Case getCaseAt(int x, int y) {
+           return this.plateau[x][y];
+    }
+
+    
+    
+    public Case[][] getPlateau() {
+        return plateau;
+    }
+
+    public int getHauteur() {
+        return hauteur;
+    }
+
+    public int getLargeur() {
+        return largeur;
+    }
+    
+    
 }
