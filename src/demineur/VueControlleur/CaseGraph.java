@@ -16,9 +16,9 @@ public class CaseGraph extends JPanel {
 
     private Case maCase;
 
-    public CaseGraph() {
+    public CaseGraph(Case maCase) {
         super();
-
+        this.maCase = maCase;
         setBackground(Color.GRAY);
         Border blackline = BorderFactory.createLineBorder(Color.black, 1);
         setBorder(blackline);
@@ -44,10 +44,14 @@ public class CaseGraph extends JPanel {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 super.mouseClicked(arg0);
-                //appel de la fonction qui gere le click dans game ??
+                maCase.action();
             }
 
         });
+
+    }
+
+    public void affichage() {
 
     }
 

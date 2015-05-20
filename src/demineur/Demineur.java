@@ -5,6 +5,7 @@
  */
 package demineur;
 
+import demineur.Model.Game;
 import demineur.VueControlleur.GameGraph;
 import javax.swing.SwingUtilities;
 
@@ -20,7 +21,8 @@ public class Demineur {
             @Override
             public void run() {
                 //On crée une nouvelle instance de JDialog
-                GameGraph fenetre = new GameGraph();
+                Game game = new Game(10, 10);
+                GameGraph fenetre = new GameGraph(game);
                 fenetre.setVisible(true);//On la rend visible
             }
         });

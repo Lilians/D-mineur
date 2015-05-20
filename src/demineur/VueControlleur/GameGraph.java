@@ -4,12 +4,15 @@
  */
 package demineur.VueControlleur;
 
+import demineur.Model.Game;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -22,12 +25,13 @@ import javax.swing.JMenu;
  *
  * @author frederic
  */
-public class GameGraph extends JFrame {
-// reference de game ?
+public class GameGraph extends JFrame implements Observer {
 
-    public GameGraph() {
+    private Game game;
+
+    public GameGraph(Game game) {
         super();
-
+        this.game = game;
         this.build();
 
         addWindowListener(new WindowAdapter() {
@@ -40,6 +44,10 @@ public class GameGraph extends JFrame {
 
     }
 
+    public GameGraph() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public void build() {
 
         //JMenu jm = new JMenu();
@@ -50,7 +58,8 @@ public class GameGraph extends JFrame {
         JMenuItem mi = new JMenuItem("Recommancer");
         mi.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                //ajout game.recommencer
+                game.recommencer();
+                affichage();
             }
         });
         m.add(mi);
@@ -61,15 +70,33 @@ public class GameGraph extends JFrame {
 
         setTitle("Démineur");
         setSize(400, 400);
-        JComponent pan = new JPanel(new GridLayout(10, 10));
+        JComponent pan = new JPanel(new GridLayout(game.getHauteur(), game.getLargeur()));
 
-        for (int i = 0; i < 100; i++) {
-            JComponent ptest = new CaseGraph();
-            pan.add(ptest);
+        for (int i = 0; i < game.getHauteur(); i++) {
+            for (int j = 0; j < game.getLargeur(); j++) {
+                JComponent ptest = new CaseGraph(game.getCaseAt(i, j);
+                pan.add(ptest);
+            }
+
         }
         add(pan);
-        //setContentPane(pan);
 
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
+        affichage();
+    }
+
+    private void affichage() {
+
+        for (int i = 0; i < game.getHauteur(); i++) {
+            for (int j = 0; j < game.getLargeur(); j++) {
+                this.getComponent(i * game.getHauteur() + j * game.getLArgeur()).affichage();
+            }
+
+        }
     }
 
 }
