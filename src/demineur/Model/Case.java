@@ -13,22 +13,19 @@ public class Case {
 
     private boolean drapeau;
     private boolean estMinee;
-    private int nbBombesAutours;
+    private int nbBombesAutour;
     private boolean estVisible;
 
     public Case(boolean drapeau, boolean estMinee, int nbBombesAutours, boolean estVisible) {
         this.drapeau = drapeau;
         this.estMinee = estMinee;
-        this.nbBombesAutours = nbBombesAutours;
+        this.nbBombesAutour = nbBombesAutours;
         this.estVisible = estVisible;
     }
 
-    public Case() {
-        this(false, false, 0);
-    }
 
     public void action() {
-        
+        // TODO
     }
     
     public boolean getDrapeau() {
@@ -39,8 +36,8 @@ public class Case {
         return estMinee;
     }
 
-    public int getNbBombesAutours() {
-        return nbBombesAutours;
+    public int getNbBombesAutour() {
+        return nbBombesAutour;
     }
 
     public void setEstBalisee(boolean drapeau) {
@@ -51,8 +48,8 @@ public class Case {
         this.estMinee = estMinee;
     }
 
-    public void setNbBombesAutours(int nbBombesAutours) {
-        this.nbBombesAutours = nbBombesAutours;
+    public void setNbBombesAutour(int nbBombesAutour) {
+        this.nbBombesAutour = nbBombesAutour;
     }
 
     public void setDrapeau(boolean drapeau) {
@@ -61,6 +58,14 @@ public class Case {
 
     public void setEstVisible(boolean estVisible) {
         this.estVisible = estVisible;
+    }
+
+    public boolean isDrapeau() {
+        return drapeau;
+    }
+
+    public boolean isEstVisible() {
+        return estVisible;
     }
 
     

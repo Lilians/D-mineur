@@ -5,6 +5,7 @@
  */
 package demineur.Model;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Random;
 
@@ -17,16 +18,19 @@ public class Game extends Observable {
     private Case[][] plateau;
     private int hauteur; // X
     private int largeur; // Y
+    private int proba;
+    private int compteurBombe;
+            
 
     //notifyObservers();
-    public Game(int hauteur, int largeur) {
+    public Game(int hauteur, int largeur, int proba) {
 
         plateau = new Case[hauteur][largeur];
         //generation du plateau
     }
 
-    public void recommencer(int nbBombes) {
-        this.genererPlateau(nbBombes);
+    public void recommencer() {
+        this.genererPlateau();
     }
 
     public void actionSurLaCase(int x, int y) {
@@ -34,17 +38,47 @@ public class Game extends Observable {
 
     }
     
-    public void genererPlateau(int nbBombes) {
+    // pour 15% : proba = 15
+    public void genererPlateau() {
         int compteurBombe = 0;
         Random rand = new Random() ;
         for (int i = 0; i<hauteur; i++) {
             for (int j=0; j<largeur; j++) {
-                if (compteurBombe < nbBombes) {
-                    
-                 //   nbBombes / (this.hauteur * this.largeur) 
+                int alea = rand.nextInt(100);
+                boolean estMinee;
+                if (alea < this.proba-1) { // mettre bombe
+                    estMinee = true;
+                    compteurBombe++;
+                } else {
+                    estMinee = false;
                 }
+                this.plateau[i][j] = new Case(false, estMinee, 0, false);
             }
         }
+        this.compteurBombe = compteurBombe;
+    }
+    
+    public void updateVoisins() {
+        int compteur = 0;
+        for (int i = 0; i<hauteur; i++) {
+            for (int j=0; j<largeur; j++) {
+                compteur = 0;
+                ArrayList<Case> voisins = this.getVoisins(this.plateau[i][j]);
+                for (Case c : voisins) {
+                    if (c.isEstMinee()) {
+                        compteur++;
+                    }
+                }
+                this.plateau[i][j].setNbBombesAutour(compteur);
+            }
+        }
+    }
+    
+
+    // Retourne la liste des cases voisine
+    public ArrayList<Case> getVoisins(Case maCase) {
+        // TODO !! 
+        return null;
     }
     
     
@@ -65,6 +99,14 @@ public class Game extends Observable {
 
     public int getLargeur() {
         return largeur;
+    }
+
+    public int getProba() {
+        return proba;
+    }
+
+    public int getCompteurBombe() {
+        return compteurBombe;
     }
     
     
