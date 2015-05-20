@@ -16,7 +16,7 @@ public class CaseGraph extends JPanel {
 
     private Case maCase;
 
-    public CaseGraph() {
+    public CaseGraph(Case maCase) {
         super();
 
         setBackground(Color.GRAY);
