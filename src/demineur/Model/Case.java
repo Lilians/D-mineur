@@ -15,24 +15,28 @@ public class Case {
     private boolean estMinee;
     private int nbBombesAutour;
     private boolean estVisible;
+//    private int x; // hauteur
+//    private int y; // largeur
 
-    public Case(boolean drapeau, boolean estMinee, int nbBombesAutours, boolean estVisible) {
+    public Case(boolean drapeau, boolean estMinee, int nbBombesAutours, boolean estVisible, int x, int y) {
         this.drapeau = drapeau;
         this.estMinee = estMinee;
         this.nbBombesAutour = nbBombesAutours;
         this.estVisible = estVisible;
+//        this.x = x;
+//        this.y = y; 
     }
 
     public void action() {
         this.estVisible = true;
     }
 
-    public void drapeau() {
-        this.drapeau = true;
-    }
-
-    public boolean getDrapeau() {
-        return drapeau;
+    public void actionDrapeau() {
+        if (drapeau) {
+            this.drapeau = false;
+        } else {
+            this.drapeau = true;
+        }
     }
 
     public boolean isEstMinee() {
@@ -71,4 +75,11 @@ public class Case {
         return estVisible;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 }

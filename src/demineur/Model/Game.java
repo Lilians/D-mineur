@@ -16,21 +16,16 @@ import java.util.Random;
  */
 public class Game extends Observable {
 
-    private Case[][] plateau;
-    private int hauteur; // X
-    private int largeur; // Y
-    private int proba;
+    private int proba; // pourcentage de bombe. Exemple : 15 pour 15%
     private int compteurBombe;
+    private Grille grille;
 
+    // TODO
     //notifyObservers();
     public Game(int hauteur, int largeur, int proba) {
-
-        plateau = new Case[hauteur][largeur];
-        this.hauteur = hauteur;
-        this.largeur = largeur;
         this.proba = proba;
-        this.genererPlateau();;
-        //generation du plateau
+        this.genererPlateau();
+        this.grille = new Grille(hauteur, largeur);
     }
 
     public void recommencer() {
@@ -41,28 +36,28 @@ public class Game extends Observable {
         this.addObserver(gameGraph);
     }
 
-    public void actionSurLaCase(int x, int y) {
+    public void actionSurLaCase(Case maCase) {
         //action
-        this.plateau[x][y].action();
+        Point point = this.grille.getCorrespondance().get(maCase);
+        this.grille.getPlateau()[point.getX()][point.getY()].action();
         this.setChanged();
         this.notifyObservers();
-
     }
 
-    public void drapeauSurLaCase(int x, int y) {
+    public void drapeauSurLaCase(Case maCase) {
         //action
-        this.plateau[x][y].drapeau();
+        Point point = this.grille.getCorrespondance().get(maCase);
+        this.grille.getPlateau()[point.getX()][point.getY()].actionDrapeau();
         this.setChanged();
         this.notifyObservers();
-
     }
 
-    // pour 15% : proba = 15
+    // exécutée à l'initialisation
     public void genererPlateau() {
         int compteurBombe = 0;
         Random rand = new Random();
-        for (int i = 0; i < hauteur; i++) {
-            for (int j = 0; j < largeur; j++) {
+        for (int i = 0; i < this.grille.getHauteur(); i++) {
+            for (int j = 0; j < this.grille.getLargeur(); j++) {
                 int alea = rand.nextInt(100);
                 boolean estMinee;
                 if (alea < this.proba - 1) { // mettre bombe
@@ -71,49 +66,59 @@ public class Game extends Observable {
                 } else {
                     estMinee = false;
                 }
-                this.plateau[i][j] = new Case(false, estMinee, 0, false);
+                this.grille.getPlateau()[i][j] = new Case(false, estMinee, 0, false, i, j);
+                this.grille.getCorrespondance().put(this.grille.getPlateau()[i][j], new Point(i, j));
             }
         }
         this.compteurBombe = compteurBombe;
     }
 
+    // exécutée à l'initialisation
+    // Met à jour le nombre de voisins
     public void updateVoisins() {
         int compteur = 0;
-        for (int i = 0; i < hauteur; i++) {
-            for (int j = 0; j < largeur; j++) {
+        for (int i = 0; i <  this.grille.getHauteur(); i++) {
+            for (int j = 0; j < this.grille.getLargeur(); j++) {
                 compteur = 0;
-                ArrayList<Case> voisins = this.getVoisins(this.plateau[i][j]);
+                ArrayList<Case> voisins = this.getVoisins(this.grille.getPlateau()[i][j]);
                 for (Case c : voisins) {
                     if (c.isEstMinee()) {
                         compteur++;
                     }
                 }
-                this.plateau[i][j].setNbBombesAutour(compteur);
+                this.grille.getPlateau()[i][j].setNbBombesAutour(compteur);
             }
         }
     }
 
     // Retourne la liste des cases voisine
     public ArrayList<Case> getVoisins(Case maCase) {
-        // TODO !!
-        return null;
-    }
-
-    // Retourne la case correspondante
-    public Case getCaseAt(int x, int y) {
-        return this.plateau[x][y];
-    }
-
-    public Case[][] getPlateau() {
-        return plateau;
-    }
-
-    public int getHauteur() {
-        return hauteur;
-    }
-
-    public int getLargeur() {
-        return largeur;
+        ArrayList<Case> listeVoisins = new ArrayList<Case>();
+        if (maCase.getX() != 0) {
+            listeVoisins.add(this.grille.getPlateau()[maCase.getX()-1][maCase.getY()]);
+            if (maCase.getY() != 0) {
+                listeVoisins.add(this.grille.getPlateau()[maCase.getX()-1][maCase.getY()-1]);
+            }
+            if (maCase.getY() != this.grille.getLargeur()-1) {
+                 listeVoisins.add(this.grille.getPlateau()[maCase.getX()-1][maCase.getY()+1]);
+            }
+        }
+        if (maCase.getX() !=  this.grille.getHauteur()-1) {
+            listeVoisins.add(this.grille.getPlateau()[maCase.getX()+1][maCase.getY()]);
+            if (maCase.getY() != 0) {
+                 listeVoisins.add(this.grille.getPlateau()[maCase.getX()+1][maCase.getY()-1]);
+            }
+            if (maCase.getY() != this.grille.getLargeur()-1) {
+                 listeVoisins.add(this.grille.getPlateau()[maCase.getX()+1][maCase.getY()+1]);
+            }
+        }
+        if (maCase.getY() != 0) {
+            listeVoisins.add(this.grille.getPlateau()[maCase.getX()][maCase.getY()-1]);
+        }
+        if (maCase.getY() != this.grille.getLargeur()-1) {
+            listeVoisins.add(this.grille.getPlateau()[maCase.getX()][maCase.getY()+1]);
+        }
+        return listeVoisins;
     }
 
     public int getProba() {
@@ -124,4 +129,9 @@ public class Game extends Observable {
         return compteurBombe;
     }
 
+    public Grille getGrille() {
+        return grille;
+    }
+
+    
 }
