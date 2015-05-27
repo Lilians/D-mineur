@@ -1,5 +1,6 @@
 package demineur.VueControlleur;
 
+import demineur.Model.Case;
 import demineur.Model.Game;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
@@ -16,17 +17,15 @@ import javax.swing.border.Border;
 public class CaseGraph extends JPanel {
 
     private Game game;
-    private int positionX;
-    private int positionY;
+    private Case myCase;
     private JLabel label;
 
-    public CaseGraph(Game game, int x, int y) {
+    public CaseGraph(Game game, Case myCase) {
         super();
         label = new JLabel(" ");
         this.add(label);
         this.game = game;
-        this.positionX = x;
-        this.positionY = y;
+        this.myCase = myCase;
         setBackground(Color.GRAY);
         Border blackline = BorderFactory.createLineBorder(Color.black, 1);
         setBorder(blackline);
@@ -52,10 +51,10 @@ public class CaseGraph extends JPanel {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 super.mouseClicked(arg0);
-                if (arg0.getButton() == MouseEvent.BUTTON3) {
-                    game.drapeauSurLaCase(positionX, positionY);
-                } else {
-                    game.actionSurLaCase(positionX, positionY);
+                if (arg0.getButton() == MouseEvent.BUTTON1 && !myCase.isDrapeau() && !myCase.isEstVisible()) {
+                    game.actionSurLaCase(myCase);
+                } else if (arg0.getButton() == MouseEvent.BUTTON3 && !myCase.isEstVisible()) {
+                    game.drapeauSurLaCase(myCase);
                 }
 
             }
@@ -66,10 +65,10 @@ public class CaseGraph extends JPanel {
 
     public void affichage() {
 
-        if (game.getCaseAt(positionX, positionY).getDrapeau()) {
+        if (myCase.isDrapeau()) {
             label.setText("|>");
-        } else if (game.getCaseAt(positionX, positionY).isEstVisible()) {
-            label.setText("" + game.getCaseAt(positionX, positionY).getNbBombesAutour());
+        } else if (myCase.isEstVisible()) {
+            label.setText("" + myCase.getNbBombesAutour());
             setBackground(Color.WHITE);
 
         }

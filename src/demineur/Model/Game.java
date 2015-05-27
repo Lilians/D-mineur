@@ -20,12 +20,16 @@ public class Game extends Observable {
     private int compteurBombe;
     private Grille grille;
 
-    // TODO
-    //notifyObservers();
+    /* TODO
+     dans Case actionDrapeau : if drapeau==true -> false, else if drapeau==false -> true
+     répendre actionSurCase
+     bug Recommencer
+     notify Observer en cas de défaite ou de victoire
+     */
     public Game(int hauteur, int largeur, int proba) {
         this.proba = proba;
-        this.genererPlateau();
         this.grille = new Grille(hauteur, largeur);
+        this.genererPlateau();
     }
 
     public void recommencer() {
@@ -77,7 +81,7 @@ public class Game extends Observable {
     // Met à jour le nombre de voisins
     public void updateVoisins() {
         int compteur = 0;
-        for (int i = 0; i <  this.grille.getHauteur(); i++) {
+        for (int i = 0; i < this.grille.getHauteur(); i++) {
             for (int j = 0; j < this.grille.getLargeur(); j++) {
                 compteur = 0;
                 ArrayList<Case> voisins = this.getVoisins(this.grille.getPlateau()[i][j]);
@@ -96,28 +100,28 @@ public class Game extends Observable {
         ArrayList<Case> listeVoisins = new ArrayList<Case>();
         Point point = this.grille.getCorrespondance().get(maCase);
         if (point.getX() != 0) {
-            listeVoisins.add(this.grille.getPlateau()[point.getX()-1][point.getY()]);
+            listeVoisins.add(this.grille.getPlateau()[point.getX() - 1][point.getY()]);
             if (point.getY() != 0) {
-                listeVoisins.add(this.grille.getPlateau()[point.getX()-1][point.getY()-1]);
+                listeVoisins.add(this.grille.getPlateau()[point.getX() - 1][point.getY() - 1]);
             }
-            if (point.getY() != this.grille.getLargeur()-1) {
-                 listeVoisins.add(this.grille.getPlateau()[point.getX()-1][point.getY()+1]);
+            if (point.getY() != this.grille.getLargeur() - 1) {
+                listeVoisins.add(this.grille.getPlateau()[point.getX() - 1][point.getY() + 1]);
             }
         }
-        if (point.getX() !=  this.grille.getHauteur()-1) {
-            listeVoisins.add(this.grille.getPlateau()[point.getX()+1][point.getY()]);
+        if (point.getX() != this.grille.getHauteur() - 1) {
+            listeVoisins.add(this.grille.getPlateau()[point.getX() + 1][point.getY()]);
             if (point.getY() != 0) {
-                 listeVoisins.add(this.grille.getPlateau()[point.getX()+1][point.getY()-1]);
+                listeVoisins.add(this.grille.getPlateau()[point.getX() + 1][point.getY() - 1]);
             }
-            if (point.getY() != this.grille.getLargeur()-1) {
-                 listeVoisins.add(this.grille.getPlateau()[point.getX()+1][point.getY()+1]);
+            if (point.getY() != this.grille.getLargeur() - 1) {
+                listeVoisins.add(this.grille.getPlateau()[point.getX() + 1][point.getY() + 1]);
             }
         }
         if (point.getY() != 0) {
-            listeVoisins.add(this.grille.getPlateau()[point.getX()][point.getY()-1]);
+            listeVoisins.add(this.grille.getPlateau()[point.getX()][point.getY() - 1]);
         }
-        if (point.getY() != this.grille.getLargeur()-1) {
-            listeVoisins.add(this.grille.getPlateau()[point.getX()][point.getY()+1]);
+        if (point.getY() != this.grille.getLargeur() - 1) {
+            listeVoisins.add(this.grille.getPlateau()[point.getX()][point.getY() + 1]);
         }
         return listeVoisins;
     }
@@ -134,5 +138,4 @@ public class Game extends Observable {
         return grille;
     }
 
-    
 }

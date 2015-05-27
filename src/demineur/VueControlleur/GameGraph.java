@@ -5,6 +5,7 @@
 package demineur.VueControlleur;
 
 import demineur.Model.Game;
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +16,7 @@ import java.util.Observer;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -44,10 +46,6 @@ public class GameGraph extends JFrame implements Observer {
 
     }
 
-    public GameGraph() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     public void build() {
 
         JMenuBar jm = new JMenuBar();
@@ -70,16 +68,20 @@ public class GameGraph extends JFrame implements Observer {
 
         setTitle("Démineur");
         setSize(400, 400);
-        JComponent pan = new JPanel(new GridLayout(game.getHauteur(), game.getLargeur()));
+        JComponent pan = new JPanel(new GridLayout(game.getGrille().getHauteur(), game.getGrille().getLargeur()));
 
-        for (int i = 0; i < game.getHauteur(); i++) {
-            for (int j = 0; j < game.getLargeur(); j++) {
-                JComponent ptest = new CaseGraph(game, i, j);
+        for (int i = 0; i < game.getGrille().getHauteur(); i++) {
+            for (int j = 0; j < game.getGrille().getLargeur(); j++) {
+                JComponent ptest = new CaseGraph(game, game.getGrille().getCaseAt(i, j));
                 pan.add(ptest);
             }
         }
-        add(pan);
-
+        JComponent but = new JLabel("Nombre de Mine : ");
+        but.setEnabled(false);
+        ((JLabel) but).setText(((JLabel) but).getText() + game.getCompteurBombe());
+        pan.add(but, BorderLayout.NORTH);
+        add(pan, BorderLayout.CENTER);
+        add(but, BorderLayout.NORTH);
     }
 
     @Override
@@ -89,17 +91,23 @@ public class GameGraph extends JFrame implements Observer {
     }
 
     private void reinit() {
+        JComponent pan = new JPanel(new GridLayout(game.getGrille().getHauteur(), game.getGrille().getLargeur()));
 
-        this.removeAll();
-        this.build();
+        for (int i = 0; i < game.getGrille().getHauteur(); i++) {
+            for (int j = 0; j < game.getGrille().getLargeur(); j++) {
+                JComponent ptest = new CaseGraph(game, game.getGrille().getCaseAt(i, j));
+                pan.add(ptest);
+            }
+        }
+        add(pan);
 
     }
 
     private void affichage() {
 
-        for (int i = 0; i < game.getHauteur(); i++) {
-            for (int j = 0; j < game.getLargeur(); j++) {
-                ((CaseGraph) ((JPanel) this.getContentPane().getComponent(0)).getComponent(i * game.getHauteur() + j)).affichage();
+        for (int i = 0; i < game.getGrille().getHauteur(); i++) {
+            for (int j = 0; j < game.getGrille().getLargeur(); j++) {
+                ((CaseGraph) ((JPanel) this.getContentPane().getComponent(0)).getComponent(i * game.getGrille().getHauteur() + j)).affichage();
             }
 
         }
