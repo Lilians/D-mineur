@@ -94,29 +94,30 @@ public class Game extends Observable {
     // Retourne la liste des cases voisine
     public ArrayList<Case> getVoisins(Case maCase) {
         ArrayList<Case> listeVoisins = new ArrayList<Case>();
-        if (maCase.getX() != 0) {
-            listeVoisins.add(this.grille.getPlateau()[maCase.getX()-1][maCase.getY()]);
-            if (maCase.getY() != 0) {
-                listeVoisins.add(this.grille.getPlateau()[maCase.getX()-1][maCase.getY()-1]);
+        Point point = this.grille.getCorrespondance().get(maCase);
+        if (point.getX() != 0) {
+            listeVoisins.add(this.grille.getPlateau()[point.getX()-1][point.getY()]);
+            if (point.getY() != 0) {
+                listeVoisins.add(this.grille.getPlateau()[point.getX()-1][point.getY()-1]);
             }
-            if (maCase.getY() != this.grille.getLargeur()-1) {
-                 listeVoisins.add(this.grille.getPlateau()[maCase.getX()-1][maCase.getY()+1]);
-            }
-        }
-        if (maCase.getX() !=  this.grille.getHauteur()-1) {
-            listeVoisins.add(this.grille.getPlateau()[maCase.getX()+1][maCase.getY()]);
-            if (maCase.getY() != 0) {
-                 listeVoisins.add(this.grille.getPlateau()[maCase.getX()+1][maCase.getY()-1]);
-            }
-            if (maCase.getY() != this.grille.getLargeur()-1) {
-                 listeVoisins.add(this.grille.getPlateau()[maCase.getX()+1][maCase.getY()+1]);
+            if (point.getY() != this.grille.getLargeur()-1) {
+                 listeVoisins.add(this.grille.getPlateau()[point.getX()-1][point.getY()+1]);
             }
         }
-        if (maCase.getY() != 0) {
-            listeVoisins.add(this.grille.getPlateau()[maCase.getX()][maCase.getY()-1]);
+        if (point.getX() !=  this.grille.getHauteur()-1) {
+            listeVoisins.add(this.grille.getPlateau()[point.getX()+1][point.getY()]);
+            if (point.getY() != 0) {
+                 listeVoisins.add(this.grille.getPlateau()[point.getX()+1][point.getY()-1]);
+            }
+            if (point.getY() != this.grille.getLargeur()-1) {
+                 listeVoisins.add(this.grille.getPlateau()[point.getX()+1][point.getY()+1]);
+            }
         }
-        if (maCase.getY() != this.grille.getLargeur()-1) {
-            listeVoisins.add(this.grille.getPlateau()[maCase.getX()][maCase.getY()+1]);
+        if (point.getY() != 0) {
+            listeVoisins.add(this.grille.getPlateau()[point.getX()][point.getY()-1]);
+        }
+        if (point.getY() != this.grille.getLargeur()-1) {
+            listeVoisins.add(this.grille.getPlateau()[point.getX()][point.getY()+1]);
         }
         return listeVoisins;
     }
