@@ -21,7 +21,6 @@ public class Game extends Observable {
     private Grille grille;
 
     /* TODO
-     dans Case actionDrapeau : if drapeau==true -> false, else if drapeau==false -> true
      répendre actionSurCase
      bug Recommencer
      notify Observer en cas de défaite ou de victoire
@@ -70,7 +69,7 @@ public class Game extends Observable {
                 } else {
                     estMinee = false;
                 }
-                this.grille.getPlateau()[i][j] = new Case(false, estMinee, 0, false, i, j);
+                this.grille.getPlateau()[i][j] = new Case(false, estMinee, 0, false);
                 this.grille.getCorrespondance().put(this.grille.getPlateau()[i][j], new Point(i, j));
             }
         }

@@ -18,13 +18,11 @@ public class Case {
 //    private int x; // hauteur
 //    private int y; // largeur
 
-    public Case(boolean drapeau, boolean estMinee, int nbBombesAutours, boolean estVisible, int x, int y) {
+    public Case(boolean drapeau, boolean estMinee, int nbBombesAutours, boolean estVisible) {
         this.drapeau = drapeau;
         this.estMinee = estMinee;
         this.nbBombesAutour = nbBombesAutours;
         this.estVisible = estVisible;
-//        this.x = x;
-//        this.y = y; 
     }
 
     public void action() {
