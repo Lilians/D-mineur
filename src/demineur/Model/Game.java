@@ -38,6 +38,7 @@ public class Game extends Observable {
     public void recommencer() {
         this.genererPlateau();
         this.updateVoisins();
+        this.compteurCaseAction = 0;
     }
 
     public void initialisationObserver(GameGraph gameGraph) {
@@ -86,6 +87,7 @@ public class Game extends Observable {
 
         } else if (!maCase.isEstMinee()) {
             this.compteurCaseAction++;
+            this.listeEtendre.add(maCase);
             maCase.action();
         }
 
@@ -97,10 +99,10 @@ public class Game extends Observable {
         this.grille.getPlateau()[point.getX()][point.getY()].actionDrapeau();
         if (maCase.isDrapeau()) {
             this.compteurBombe--;
-            this.compteurCaseAction--;
+            this.compteurCaseAction++;
         } else {
             this.compteurBombe++;
-            this.compteurCaseAction++;
+            this.compteurCaseAction--;
         }
         this.setChanged();
         this.notifyObservers();

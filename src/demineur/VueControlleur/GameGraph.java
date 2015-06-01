@@ -112,7 +112,7 @@ public class GameGraph extends JFrame implements Observer {
             }
         }
         JComponent but = new JLabel("Nombre de Mine : " + game.getCompteurBombe());
-        but.setEnabled(false);
+        but.setEnabled(true);
         add(pan, BorderLayout.CENTER);
         add(but, BorderLayout.NORTH);
 
