@@ -71,12 +71,10 @@ public class CaseGraph extends JPanel {
             label.setText("" + myCase.getNbBombesAutour());
             setBackground(Color.WHITE);
 
-        } else if (!myCase.isEstVisible()) {
+        } else {
             label.setText("");
             setBackground(Color.GRAY);
-
         }
-
     }
 
 }

@@ -15,8 +15,6 @@ public class Case {
     private boolean estMinee;
     private int nbBombesAutour;
     private boolean estVisible;
-//    private int x; // hauteur
-//    private int y; // largeur
 
     public Case(boolean drapeau, boolean estMinee, int nbBombesAutours, boolean estVisible) {
         this.drapeau = drapeau;
