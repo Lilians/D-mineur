@@ -28,6 +28,7 @@ public class Game extends Observable {
         this.proba = proba;
         this.grille = new Grille(hauteur, largeur);
         this.genererPlateau();
+        this.updateVoisins();
     }
 
     public void recommencer() {
@@ -43,22 +44,34 @@ public class Game extends Observable {
         //Point point = this.grille.getCorrespondance().get(maCase);
         //this.grille.getPlateau()[point.getX()][point.getY()];
 
-        maCase.action();
+      
         if (maCase.isEstMinee()) {
+            maCase.action();
             this.setChanged();
             this.notifyObservers(true);   // TODO : arg dans l'oberserver
         } else if (maCase.getNbBombesAutour() == 0) {
-            // traiter
+            this.etendreCase(maCase);
             this.setChanged();
             this.notifyObservers();
         } else {
+            maCase.action();
             this.setChanged();
-            this.notifyObservers(); // TODO : arg dans l'oberserver
+            this.notifyObservers(); 
         }
     }
 
-    public void rependreCase() {
+    public void etendreCase(Case maCase) {
+        
+        if (maCase.getNbBombesAutour() == 0) {
+            maCase.action();
 
+            ArrayList<Case> voisins = this.getVoisins(maCase);
+            for (int i = 0; i < voisins.size(); i++) {
+                this.etendreCase(voisins.get(i));
+            }
+        } else if (!maCase.isEstMinee()) { 
+            maCase.action();
+        }
     }
 
     public void drapeauSurLaCase(Case maCase) {
