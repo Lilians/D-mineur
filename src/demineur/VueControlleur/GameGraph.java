@@ -6,7 +6,6 @@ package demineur.VueControlleur;
 
 import demineur.Model.Game;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -87,10 +86,17 @@ public class GameGraph extends JFrame implements Observer {
     @Override
     public void update(Observable o, Object arg) {
 
-        if (arg instanceof Boolean) {
-            System.out.println("ça marche");
-        }
         affichage();
+        if (arg instanceof Boolean) {
+            if ((Boolean) arg == true) {
+                javax.swing.JOptionPane.showMessageDialog(null, "Boom ! Vous avez perdu(e) !");
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(null, "Pas de boom ! Vos avez gagné(e) !");
+            }
+            game.recommencer();
+            reinit();
+            affichage();
+        }
     }
 
     private void reinit() {
@@ -105,9 +111,8 @@ public class GameGraph extends JFrame implements Observer {
                 pan.add(ptest);
             }
         }
-        JComponent but = new JLabel("Nombre de Mine : ");
+        JComponent but = new JLabel("Nombre de Mine : " + game.getCompteurBombe());
         but.setEnabled(false);
-        ((JLabel) but).setText(((JLabel) but).getText() + game.getCompteurBombe());
         add(pan, BorderLayout.CENTER);
         add(but, BorderLayout.NORTH);
 
@@ -115,6 +120,7 @@ public class GameGraph extends JFrame implements Observer {
 
     private void affichage() {
 
+        ((JLabel) this.getContentPane().getComponent(1)).setText("Nombre de Mine : " + game.getCompteurBombe());
         for (int i = 0; i < game.getGrille().getHauteur(); i++) {
             for (int j = 0; j < game.getGrille().getLargeur(); j++) {
                 ((CaseGraph) ((JPanel) this.getContentPane().getComponent(0)).getComponent(i * game.getGrille().getHauteur() + j)).affichage();
