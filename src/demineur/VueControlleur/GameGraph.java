@@ -79,7 +79,6 @@ public class GameGraph extends JFrame implements Observer {
         JComponent but = new JLabel("Nombre de Mine : ");
         but.setEnabled(false);
         ((JLabel) but).setText(((JLabel) but).getText() + game.getCompteurBombe());
-        pan.add(but, BorderLayout.NORTH);
         add(pan, BorderLayout.CENTER);
         add(but, BorderLayout.NORTH);
     }
@@ -91,6 +90,9 @@ public class GameGraph extends JFrame implements Observer {
     }
 
     private void reinit() {
+        this.getContentPane().remove(0);
+        this.getContentPane().remove(0);
+        this.game.recommencer();
         JComponent pan = new JPanel(new GridLayout(game.getGrille().getHauteur(), game.getGrille().getLargeur()));
 
         for (int i = 0; i < game.getGrille().getHauteur(); i++) {
@@ -99,7 +101,11 @@ public class GameGraph extends JFrame implements Observer {
                 pan.add(ptest);
             }
         }
-        add(pan);
+        JComponent but = new JLabel("Nombre de Mine : ");
+        but.setEnabled(false);
+        ((JLabel) but).setText(((JLabel) but).getText() + game.getCompteurBombe());
+        add(pan, BorderLayout.CENTER);
+        add(but, BorderLayout.NORTH);
 
     }
 
