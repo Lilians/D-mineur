@@ -22,7 +22,6 @@ public class Game extends Observable {
 
     /* TODO
      répendre actionSurCase
-     bug Recommencer
      notify Observer en cas de défaite ou de victoire
      */
     public Game(int hauteur, int largeur, int proba) {
