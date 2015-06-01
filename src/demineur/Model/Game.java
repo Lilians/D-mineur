@@ -19,6 +19,8 @@ public class Game extends Observable {
     private int proba; // pourcentage de bombe. Exemple : 15 pour 15%
     private int compteurBombe;
     private Grille grille;
+    private ArrayList<Case> listeEtendre;
+    private int compteurCaseAction;
 
     /* TODO
      répendre actionSurCase
@@ -29,6 +31,8 @@ public class Game extends Observable {
         this.grille = new Grille(hauteur, largeur);
         this.genererPlateau();
         this.updateVoisins();
+        this.listeEtendre = new ArrayList<Case>();
+        this.compteurCaseAction = 0;
     }
 
     public void recommencer() {
@@ -44,40 +48,59 @@ public class Game extends Observable {
         //Point point = this.grille.getCorrespondance().get(maCase);
         //this.grille.getPlateau()[point.getX()][point.getY()];
 
-      
         if (maCase.isEstMinee()) {
             maCase.action();
             this.setChanged();
-            this.notifyObservers(true);   // TODO : arg dans l'oberserver
+            this.notifyObservers(true); 
         } else if (maCase.getNbBombesAutour() == 0) {
+            this.listeEtendre.clear();
             this.etendreCase(maCase);
             this.setChanged();
             this.notifyObservers();
         } else {
             maCase.action();
+            this.compteurCaseAction++;
             this.setChanged();
-            this.notifyObservers(); 
+            this.notifyObservers();
+        }
+        if (this.compteurCaseAction == this.grille.getLargeur() * this.grille.getLongueur()) {
+            this.setChanged();
+            this.notifyObservers(false); 
         }
     }
 
     public void etendreCase(Case maCase) {
-        
+
         if (maCase.getNbBombesAutour() == 0) {
             maCase.action();
-
+            this.compteurCaseAction++;
+            this.listeEtendre.add(maCase);
             ArrayList<Case> voisins = this.getVoisins(maCase);
+
             for (int i = 0; i < voisins.size(); i++) {
-                this.etendreCase(voisins.get(i));
+                if (!this.listeEtendre.contains(voisins.get(i))) {
+                    this.etendreCase(voisins.get(i));
+                }
             }
-        } else if (!maCase.isEstMinee()) { 
+
+        } else if (!maCase.isEstMinee()) {
+            this.compteurCaseAction++;
             maCase.action();
         }
+        
     }
 
     public void drapeauSurLaCase(Case maCase) {
         //action
         Point point = this.grille.getCorrespondance().get(maCase);
         this.grille.getPlateau()[point.getX()][point.getY()].actionDrapeau();
+        if (maCase.isDrapeau()) {
+            this.compteurBombe--;
+            this.compteurCaseAction--;
+        } else {
+            this.compteurBombe++;
+            this.compteurCaseAction++;
+        }
         this.setChanged();
         this.notifyObservers();
     }
