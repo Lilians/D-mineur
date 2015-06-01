@@ -6,6 +6,7 @@ package demineur.VueControlleur;
 
 import demineur.Model.Game;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -86,6 +87,9 @@ public class GameGraph extends JFrame implements Observer {
     @Override
     public void update(Observable o, Object arg) {
 
+        if (arg instanceof Boolean) {
+            System.out.println("ça marche");
+        }
         affichage();
     }
 

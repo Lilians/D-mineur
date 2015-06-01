@@ -42,11 +42,11 @@ public class Game extends Observable {
         //action
         //Point point = this.grille.getCorrespondance().get(maCase);
         //this.grille.getPlateau()[point.getX()][point.getY()];
-        
+
         maCase.action();
         if (maCase.isEstMinee()) {
             this.setChanged();
-            this.notifyObservers();   // TODO : arg dans l'oberserver
+            this.notifyObservers(true);   // TODO : arg dans l'oberserver
         } else if (maCase.getNbBombesAutour() == 0) {
             // traiter
             this.setChanged();
@@ -56,9 +56,9 @@ public class Game extends Observable {
             this.notifyObservers(); // TODO : arg dans l'oberserver
         }
     }
-    
+
     public void rependreCase() {
-        
+
     }
 
     public void drapeauSurLaCase(Case maCase) {

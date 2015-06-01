@@ -68,8 +68,13 @@ public class CaseGraph extends JPanel {
         if (myCase.isDrapeau()) {
             label.setText("|>");
         } else if (myCase.isEstVisible()) {
-            label.setText("" + myCase.getNbBombesAutour());
-            setBackground(Color.WHITE);
+            if (myCase.isEstMinee()) {
+                label.setText("*");
+                setBackground(Color.RED);
+            } else {
+                label.setText("" + myCase.getNbBombesAutour());
+                setBackground(Color.WHITE);
+            }
 
         } else {
             label.setText("");
