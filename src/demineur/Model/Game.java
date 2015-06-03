@@ -65,7 +65,7 @@ public class Game extends Observable {
             this.setChanged();
             this.notifyObservers();
         }
-        if (this.compteurCaseAction == this.grille.getLargeur() * this.grille.getHauteur()) {
+        if (this.compteurCaseAction == this.grille.getLargeur() * this.grille.getHauteur() && this.compteurBombe == 0) {
             this.setChanged();
             this.notifyObservers(false);
         }
@@ -104,8 +104,13 @@ public class Game extends Observable {
             this.compteurBombe++;
             this.compteurCaseAction--;
         }
-        this.setChanged();
-        this.notifyObservers();
+        if (this.compteurCaseAction == this.grille.getLargeur() * this.grille.getHauteur() && this.compteurBombe == 0) {
+            this.setChanged();
+            this.notifyObservers(false);
+        } else {
+            this.setChanged();
+            this.notifyObservers();
+        }
     }
 
     // exécutée à l'initialisation
