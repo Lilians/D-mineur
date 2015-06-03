@@ -16,7 +16,7 @@ import java.util.Random;
  */
 public class Game extends Observable {
 
-    private int proba; // pourcentage de bombe. Exemple : 15 pour 15%
+    private int nbBombe;
     private int compteurBombe;
     private Grille grille;
     private int compteurCaseAction;
@@ -25,12 +25,23 @@ public class Game extends Observable {
      répendre actionSurCase
      notify Observer en cas de défaite ou de victoire
      */
-    public Game(int hauteur, int largeur, int proba) {
-        this.proba = proba;
+    public Game(int hauteur, int largeur, int nbBombe) {
+        this.nbBombe = nbBombe;
         this.grille = new Grille(hauteur, largeur);
+        this.compteurCaseAction = 0;
+        this.compteurBombe = this.nbBombe;
         this.genererPlateau();
         this.updateVoisins();
+    }
+
+    public void reinitialisation(int hauteur, int largeur, int nbBombe) {
+        this.nbBombe = nbBombe;
+        this.grille = new Grille(hauteur, largeur);
         this.compteurCaseAction = 0;
+        this.compteurBombe = this.nbBombe;
+        this.genererPlateau();
+        this.updateVoisins();
+
     }
 
     public void recommencer() {
@@ -110,27 +121,29 @@ public class Game extends Observable {
 
     // exécutée à l'initialisation
     public void genererPlateau() {
-        int compteurBombe = 0;
-        Random rand = new Random();
         for (int i = 0; i < this.grille.getHauteur(); i++) {
             for (int j = 0; j < this.grille.getLargeur(); j++) {
-                int alea = rand.nextInt(100);
-                boolean estMinee;
-                if (alea < this.proba - 1) { // mettre bombe
-                    estMinee = true;
-                    compteurBombe++;
-                } else {
-                    estMinee = false;
-                }
-                this.grille.getPlateau()[i][j] = new Case(false, estMinee, 0, false);
+
+                this.grille.getPlateau()[i][j] = new Case(false, false, 0, false);
                 this.grille.getCorrespondance().put(this.grille.getPlateau()[i][j], new Point(i, j));
             }
         }
-        this.compteurBombe = compteurBombe;
+        Random rand = new Random();
+        int i = 0;
+        int alea1;
+        int alea2;
+        while (i < this.nbBombe) {
+            alea1 = rand.nextInt(this.grille.getHauteur());
+            alea2 = rand.nextInt(this.grille.getLargeur());
+            if (!this.grille.getPlateau()[alea1][alea2].isEstMinee()) {
+                i++;
+                this.grille.getPlateau()[alea1][alea2].setEstMinee(true);
+            }
+        }
     }
 
     // exécutée à l'initialisation
-    // Met à jour le nombre de voisins
+// Met à jour le nombre de voisins
     public void updateVoisins() {
         int compteur = 0;
         for (int i = 0; i < this.grille.getHauteur(); i++) {
@@ -176,10 +189,6 @@ public class Game extends Observable {
             listeVoisins.add(this.grille.getPlateau()[point.getX()][point.getY() + 1]);
         }
         return listeVoisins;
-    }
-
-    public int getProba() {
-        return proba;
     }
 
     public int getCompteurBombe() {

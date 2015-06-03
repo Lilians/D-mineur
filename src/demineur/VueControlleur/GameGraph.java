@@ -5,6 +5,7 @@
 package demineur.VueControlleur;
 
 import demineur.Model.Game;
+import demineur.Option;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -52,7 +53,7 @@ public class GameGraph extends JFrame implements Observer {
 
         JMenu m = new JMenu("Jeu");
 
-        JMenuItem mi = new JMenuItem("Recommancer");
+        JMenuItem mi = new JMenuItem("Recommencer");
         mi.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 game.recommencer();
@@ -60,7 +61,18 @@ public class GameGraph extends JFrame implements Observer {
                 affichage();
             }
         });
+
+        JMenuItem mi2 = new JMenuItem("Options");
+        GameGraph temp = this;
+        mi2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                Option option = new Option(game, temp);
+                option.setVisible(true);
+            }
+        });
+
         m.add(mi);
+        m.add(mi2);
 
         jm.add(m);
 
@@ -89,9 +101,9 @@ public class GameGraph extends JFrame implements Observer {
         affichage();
         if (arg instanceof Boolean) {
             if ((Boolean) arg == true) {
-                javax.swing.JOptionPane.showMessageDialog(null, "Boom ! Vous avez perdu(e) !");
+                javax.swing.JOptionPane.showMessageDialog(null, "Boom ! Vous avez perdu !");
             } else {
-                javax.swing.JOptionPane.showMessageDialog(null, "Pas de boom ! Vos avez gagné(e) !");
+                javax.swing.JOptionPane.showMessageDialog(null, "Pas de boom ! Vous avez gagné !");
             }
             game.recommencer();
             reinit();
@@ -99,7 +111,7 @@ public class GameGraph extends JFrame implements Observer {
         }
     }
 
-    private void reinit() {
+    public void reinit() {
         this.getContentPane().remove(0);
         this.getContentPane().remove(0);
         this.game.recommencer();
@@ -118,12 +130,12 @@ public class GameGraph extends JFrame implements Observer {
 
     }
 
-    private void affichage() {
+    public void affichage() {
 
         ((JLabel) this.getContentPane().getComponent(1)).setText("Nombre de Mine : " + game.getCompteurBombe());
         for (int i = 0; i < game.getGrille().getHauteur(); i++) {
             for (int j = 0; j < game.getGrille().getLargeur(); j++) {
-                ((CaseGraph) ((JPanel) this.getContentPane().getComponent(0)).getComponent(i * game.getGrille().getHauteur() + j)).affichage();
+                ((CaseGraph) ((JPanel) this.getContentPane().getComponent(0)).getComponent(i * game.getGrille().getLargeur() + j)).affichage();
             }
 
         }

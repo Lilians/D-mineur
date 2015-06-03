@@ -20,7 +20,7 @@ public class Demineur {
             @Override
             public void run() {
                 //On crée une nouvelle instance de JDialog
-                Game game = new Game(10, 10, 15);
+                Game game = new Game(10, 10, 5);
                 GameGraph fenetre = new GameGraph(game);
                 fenetre.setVisible(true);//On la rend visible
             }
