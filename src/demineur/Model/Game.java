@@ -19,7 +19,6 @@ public class Game extends Observable {
     private int proba; // pourcentage de bombe. Exemple : 15 pour 15%
     private int compteurBombe;
     private Grille grille;
-    private ArrayList<Case> listeEtendre;
     private int compteurCaseAction;
 
     /* TODO
@@ -31,7 +30,6 @@ public class Game extends Observable {
         this.grille = new Grille(hauteur, largeur);
         this.genererPlateau();
         this.updateVoisins();
-        this.listeEtendre = new ArrayList<Case>();
         this.compteurCaseAction = 0;
     }
 
@@ -55,7 +53,6 @@ public class Game extends Observable {
             this.setChanged();
             this.notifyObservers(true);
         } else if (maCase.getNbBombesAutour() == 0) {
-            this.listeEtendre.clear();
             this.etendreCase(maCase);
             this.setChanged();
             this.notifyObservers();
@@ -76,18 +73,16 @@ public class Game extends Observable {
         if (maCase.getNbBombesAutour() == 0) {
             maCase.action();
             this.compteurCaseAction++;
-            this.listeEtendre.add(maCase);
             ArrayList<Case> voisins = this.getVoisins(maCase);
 
             for (int i = 0; i < voisins.size(); i++) {
-                if (!this.listeEtendre.contains(voisins.get(i))) {
+                if (!voisins.get(i).isEstVisible()) {
                     this.etendreCase(voisins.get(i));
                 }
             }
 
         } else if (!maCase.isEstMinee()) {
             this.compteurCaseAction++;
-            this.listeEtendre.add(maCase);
             maCase.action();
         }
 
