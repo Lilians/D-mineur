@@ -48,6 +48,7 @@ public class Game extends Observable {
         this.genererPlateau();
         this.updateVoisins();
         this.compteurCaseAction = 0;
+        this.compteurBombe = this.nbBombe;
     }
 
     public void initialisationObserver(GameGraph gameGraph) {
