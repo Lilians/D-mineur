@@ -275,11 +275,8 @@ public class Option extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner1StateChanged
-        if (((int) this.jSpinner1.getValue()) <= 0) {
-            this.jSpinner1.setValue(0);
-            this.jButton2.setEnabled(false);
-        } else {
-            this.jButton2.setEnabled(true);
+        if (Integer.parseInt(this.jSpinner1.getValue().toString()) <= 1) {
+            this.jSpinner1.setValue(1);
         }
 
         if (((int) this.jSpinner3.getValue()) > ((int) this.jSpinner1.getValue()) * ((int) this.jSpinner2.getValue())) {
@@ -288,11 +285,8 @@ public class Option extends javax.swing.JFrame {
     }//GEN-LAST:event_jSpinner1StateChanged
 
     private void jSpinner2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner2StateChanged
-        if (((int) this.jSpinner2.getValue()) <= 0) {
-            this.jSpinner2.setValue(0);
-            this.jButton2.setEnabled(false);
-        } else {
-            this.jButton2.setEnabled(true);
+        if (((int) this.jSpinner2.getValue()) <= 1) {
+            this.jSpinner2.setValue(1);
         }
 
         if (((int) this.jSpinner3.getValue()) > ((int) this.jSpinner1.getValue()) * ((int) this.jSpinner2.getValue())) {
@@ -306,9 +300,6 @@ public class Option extends javax.swing.JFrame {
 
         } else if (((int) this.jSpinner3.getValue()) > ((int) this.jSpinner1.getValue()) * ((int) this.jSpinner2.getValue())) {
             this.jSpinner3.setValue(((int) this.jSpinner1.getValue()) * ((int) this.jSpinner2.getValue()));
-            this.jButton2.setEnabled(true);
-        } else {
-            this.jButton2.setEnabled(true);
         }
     }//GEN-LAST:event_jSpinner3StateChanged
 

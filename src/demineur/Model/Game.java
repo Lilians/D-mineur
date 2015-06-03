@@ -87,7 +87,7 @@ public class Game extends Observable {
             ArrayList<Case> voisins = this.getVoisins(maCase);
 
             for (int i = 0; i < voisins.size(); i++) {
-                if (!voisins.get(i).isEstVisible()) {
+                if (!voisins.get(i).isEstVisible() && !voisins.get(i).isDrapeau()) {
                     this.etendreCase(voisins.get(i));
                 }
             }
