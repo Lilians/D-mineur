@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package demineur.Model;
 
 /**
  *
- * @author HP
+ * @author CLARAS Damien et BEGOU Sylvain
  */
 public class Case {
 
@@ -16,6 +11,14 @@ public class Case {
     private int nbBombesAutour;
     private boolean estVisible;
 
+    /**
+     * Constructeur
+     *
+     * @param drapeau
+     * @param estMinee
+     * @param nbBombesAutours
+     * @param estVisible
+     */
     public Case(boolean drapeau, boolean estMinee, int nbBombesAutours, boolean estVisible) {
         this.drapeau = drapeau;
         this.estMinee = estMinee;
@@ -23,10 +26,88 @@ public class Case {
         this.estVisible = estVisible;
     }
 
+    /**
+     * Retourne le nombre de bombe autour de la case
+     *
+     * @return
+     */
+    public int getNbBombesAutour() {
+        return nbBombesAutour;
+    }
+
+    /**
+     * Affecte une valeur au nombre de bombe autour de la case
+     *
+     * @param nbBombesAutour
+     */
+    public void setNbBombesAutour(int nbBombesAutour) {
+        this.nbBombesAutour = nbBombesAutour;
+    }
+
+    /**
+     * Retourne si la case est minée
+     *
+     * @return
+     */
+    public boolean isEstMinee() {
+        return estMinee;
+    }
+
+    /**
+     * Definie si la case est minée
+     *
+     * @param estMinee
+     */
+    public void setEstMinee(boolean estMinee) {
+        this.estMinee = estMinee;
+    }
+
+    /**
+     * Retourne si la case à été balisée par un drapeau
+     *
+     * @return
+     */
+    public boolean isDrapeau() {
+        return drapeau;
+    }
+
+    /**
+     * Definie si la case à été balisée par un drapeau
+     *
+     * @param drapeau
+     */
+    public void setDrapeau(boolean drapeau) {
+        this.drapeau = drapeau;
+    }
+
+    /**
+     * Retourne si la case est visible
+     *
+     * @return
+     */
+    public boolean isEstVisible() {
+        return estVisible;
+    }
+
+    /**
+     * Definie si la case est visible
+     *
+     * @param estVisible
+     */
+    public void setEstVisible(boolean estVisible) {
+        this.estVisible = estVisible;
+    }
+
+    /**
+     * Effectue les actions lors d'un clique ou d'un mouvement sur la case
+     */
     public void action() {
         this.estVisible = true;
     }
 
+    /**
+     * Effectue les actions lors de la mise d'un drapeau sur une case
+     */
     public void actionDrapeau() {
         if (drapeau) {
             this.drapeau = false;
@@ -35,39 +116,4 @@ public class Case {
         }
     }
 
-    public boolean isEstMinee() {
-        return estMinee;
-    }
-
-    public int getNbBombesAutour() {
-        return nbBombesAutour;
-    }
-
-    public void setEstBalisee(boolean drapeau) {
-        this.drapeau = drapeau;
-    }
-
-    public void setEstMinee(boolean estMinee) {
-        this.estMinee = estMinee;
-    }
-
-    public void setNbBombesAutour(int nbBombesAutour) {
-        this.nbBombesAutour = nbBombesAutour;
-    }
-
-    public void setDrapeau(boolean drapeau) {
-        this.drapeau = drapeau;
-    }
-
-    public void setEstVisible(boolean estVisible) {
-        this.estVisible = estVisible;
-    }
-
-    public boolean isDrapeau() {
-        return drapeau;
-    }
-
-    public boolean isEstVisible() {
-        return estVisible;
-    }
 }

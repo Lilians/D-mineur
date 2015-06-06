@@ -12,7 +12,7 @@ import javax.swing.border.Border;
 
 /**
  *
- * @author HP
+ * @author CLARAS Damien et BEGOU Sylvain
  */
 public class CaseGraph extends JPanel {
 
@@ -20,6 +20,12 @@ public class CaseGraph extends JPanel {
     private Case myCase;
     private JLabel label;
 
+    /**
+     * Constructeur
+     *
+     * @param game
+     * @param myCase
+     */
     public CaseGraph(Game game, Case myCase) {
         super();
         label = new JLabel(" ");
@@ -63,17 +69,53 @@ public class CaseGraph extends JPanel {
 
     }
 
+    /**
+     * Affiche la case
+     */
     public void affichage() {
 
         if (myCase.isDrapeau()) {
             label.setText("|>");
+            label.setForeground(Color.red);
         } else if (myCase.isEstVisible()) {
-            if (myCase.isEstMinee()) {
+            if (!myCase.isEstMinee()) {
+                label.setText("" + myCase.getNbBombesAutour());
+                setBackground(Color.decode("#EFEFEF"));
+                switch (myCase.getNbBombesAutour()) {
+                    case 0:
+                        label.setForeground(Color.decode("#288828"));
+                        break;
+                    case 1:
+                        label.setForeground(Color.decode("#FFC000"));
+                        break;
+                    case 2:
+                        label.setForeground(Color.decode("#FFA000"));
+                        break;
+                    case 3:
+                        label.setForeground(Color.decode("#FF8000"));
+                        break;
+                    case 4:
+                        label.setForeground(Color.decode("#FF6040"));
+                        break;
+                    case 5:
+                        label.setForeground(Color.decode("#FF4040"));
+                        break;
+                    case 6:
+                        label.setForeground(Color.decode("#FF2040"));
+                        break;
+                    case 7:
+                        label.setForeground(Color.decode("#FF1040"));
+                        break;
+                    case 8:
+                        label.setForeground(Color.decode("#FF0000"));
+                        break;
+                    default:
+                        label.setForeground(Color.BLACK);
+                        break;
+                }
+            } else {
                 label.setText("*");
                 setBackground(Color.RED);
-            } else {
-                label.setText("" + myCase.getNbBombesAutour());
-                setBackground(Color.WHITE);
             }
 
         } else {

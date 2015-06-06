@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package demineur.Model;
 
 import demineur.VueControlleur.GameGraph;
@@ -12,7 +7,7 @@ import java.util.Random;
 
 /**
  *
- * @author HP
+ * @author CLARAS Damien et Sylvain BEGOU
  */
 public class Game extends Observable {
 
@@ -20,10 +15,14 @@ public class Game extends Observable {
     private int compteurBombe;
     private Grille grille;
     private int compteurCaseAction;
+    private Personnage p;
 
-    /* TODO
-     répendre actionSurCase
-     notify Observer en cas de défaite ou de victoire
+    /**
+     * Constructeur
+     *
+     * @param hauteur
+     * @param largeur
+     * @param nbBombe
      */
     public Game(int hauteur, int largeur, int nbBombe) {
         this.nbBombe = nbBombe;
@@ -32,34 +31,151 @@ public class Game extends Observable {
         this.compteurBombe = this.nbBombe;
         this.genererPlateau();
         this.updateVoisins();
+        this.p = new Personnage(0, -1, this);
     }
 
+    /**
+     * Accesseur du compteur de bombe
+     *
+     * @return
+     */
+    public int getCompteurBombe() {
+        return compteurBombe;
+    }
+
+    /**
+     * Accesseur de la grille
+     *
+     * @return
+     */
+    public Grille getGrille() {
+        return grille;
+    }
+
+    /**
+     * Initialisation de l'observer
+     *
+     * @param gameGraph
+     */
+    public void initialisationObserver(GameGraph gameGraph) {
+        this.addObserver(gameGraph);
+    }
+
+    /**
+     * Reconstruit un plateau selon de nouveaux paramètre
+     *
+     * @param hauteur
+     * @param largeur
+     * @param nbBombe
+     */
     public void reinitialisation(int hauteur, int largeur, int nbBombe) {
         this.nbBombe = nbBombe;
         this.grille = new Grille(hauteur, largeur);
-        this.compteurCaseAction = 0;
-        this.compteurBombe = this.nbBombe;
-        this.genererPlateau();
-        this.updateVoisins();
+        this.recommencer();
 
     }
 
+    /**
+     * Reconstruit un plateau pour une nouvelle partie
+     */
     public void recommencer() {
         this.genererPlateau();
         this.updateVoisins();
         this.compteurCaseAction = 0;
         this.compteurBombe = this.nbBombe;
+
+        this.p.setX(0);
+        this.p.setY(-1);
     }
 
-    public void initialisationObserver(GameGraph gameGraph) {
-        this.addObserver(gameGraph);
+    /**
+     * Construit le plateau
+     */
+    public void genererPlateau() {
+        for (int i = 0; i < this.grille.getHauteur(); i++) {
+            for (int j = 0; j < this.grille.getLargeur(); j++) {
+
+                this.grille.nouvelleCaseAt(i, j);
+            }
+        }
+        Random rand = new Random();
+        int i = 0;
+        int alea1;
+        int alea2;
+        while (i < this.nbBombe) {
+            alea1 = rand.nextInt(this.grille.getHauteur());
+            alea2 = rand.nextInt(this.grille.getLargeur());
+            if (!this.grille.getCaseAt(alea1, alea2).isEstMinee()) {
+                i++;
+                this.grille.getCaseAt(alea1, alea2).setEstMinee(true);
+            }
+        }
     }
 
+    /**
+     * Met à jour chaque case afin de compter le nombre de bombe parmis ses
+     * voisins
+     */
+    public void updateVoisins() {
+        int compteur = 0;
+        for (int i = 0; i < this.grille.getHauteur(); i++) {
+            for (int j = 0; j < this.grille.getLargeur(); j++) {
+                compteur = 0;
+                ArrayList<Case> voisins = this.getVoisins(this.grille.getCaseAt(i, j));
+                for (Case c : voisins) {
+                    if (c.isEstMinee()) {
+                        compteur++;
+                    }
+                }
+                this.grille.getCaseAt(i, j).setNbBombesAutour(compteur);
+            }
+        }
+    }
+
+    /**
+     * Retourne les voisins d'une case
+     *
+     * @param maCase
+     * @return
+     */
+    public ArrayList<Case> getVoisins(Case maCase) {
+        ArrayList<Case> listeVoisins = new ArrayList<Case>();
+        Point point = this.grille.getPoint(maCase);
+        if (point.getX() != 0) {
+            listeVoisins.add(this.grille.getCaseAt(point.getX() - 1, point.getY()));
+            if (point.getY() != 0) {
+                listeVoisins.add(this.grille.getCaseAt(point.getX() - 1, point.getY() - 1));
+            }
+            if (point.getY() != this.grille.getLargeur() - 1) {
+                listeVoisins.add(this.grille.getCaseAt(point.getX() - 1, point.getY() + 1));
+            }
+        }
+        if (point.getX() != this.grille.getHauteur() - 1) {
+            listeVoisins.add(this.grille.getCaseAt(point.getX() + 1, point.getY()));
+            if (point.getY() != 0) {
+                listeVoisins.add(this.grille.getCaseAt(point.getX() + 1, point.getY() - 1));
+            }
+            if (point.getY() != this.grille.getLargeur() - 1) {
+                listeVoisins.add(this.grille.getCaseAt(point.getX() + 1, point.getY() + 1));
+            }
+        }
+        if (point.getY() != 0) {
+            listeVoisins.add(this.grille.getCaseAt(point.getX(), point.getY() - 1));
+        }
+        if (point.getY() != this.grille.getLargeur() - 1) {
+            listeVoisins.add(this.grille.getCaseAt(point.getX(), point.getY() + 1));
+        }
+        return listeVoisins;
+    }
+
+    /**
+     * Effectue les actions lors d'un clique ou d'un déplacement sur une case
+     *
+     * @param maCase
+     */
     public void actionSurLaCase(Case maCase) {
-        //action
-        //Point point = this.grille.getCorrespondance().get(maCase);
-        //this.grille.getPlateau()[point.getX()][point.getY()];
-
+        this.p.setX(this.grille.getPoint(maCase).getX());
+        this.p.setY(this.grille.getPoint(maCase).getY());
         if (maCase.isEstMinee()) {
             maCase.action();
             this.setChanged();
@@ -74,12 +190,18 @@ public class Game extends Observable {
             this.setChanged();
             this.notifyObservers();
         }
-        if (this.compteurCaseAction == this.grille.getLargeur() * this.grille.getHauteur() && this.compteurBombe == 0) {
+        if ((this.compteurCaseAction == this.grille.getLargeur() * this.grille.getHauteur() && this.compteurBombe == 0)
+                || (this.compteurCaseAction == this.grille.getLargeur() * this.grille.getHauteur() - this.nbBombe && this.compteurBombe == this.nbBombe)) {
             this.setChanged();
             this.notifyObservers(false);
         }
     }
 
+    /**
+     * Etend la visibilitée des cases selon les règles classique du démineur
+     *
+     * @param maCase
+     */
     public void etendreCase(Case maCase) {
 
         if (maCase.getNbBombesAutour() == 0) {
@@ -100,10 +222,14 @@ public class Game extends Observable {
 
     }
 
+    /**
+     * Effectue les actions lors de la mise d'un drapeau sur une case
+     *
+     * @param maCase
+     */
     public void drapeauSurLaCase(Case maCase) {
-        //action
-        Point point = this.grille.getCorrespondance().get(maCase);
-        this.grille.getPlateau()[point.getX()][point.getY()].actionDrapeau();
+        Point point = this.grille.getPoint(maCase);
+        this.grille.getCaseAt(point.getX(), point.getY()).actionDrapeau();
         if (maCase.isDrapeau()) {
             this.compteurBombe--;
             this.compteurCaseAction++;
@@ -120,84 +246,35 @@ public class Game extends Observable {
         }
     }
 
-    // exécutée à l'initialisation
-    public void genererPlateau() {
-        for (int i = 0; i < this.grille.getHauteur(); i++) {
-            for (int j = 0; j < this.grille.getLargeur(); j++) {
-
-                this.grille.getPlateau()[i][j] = new Case(false, false, 0, false);
-                this.grille.getCorrespondance().put(this.grille.getPlateau()[i][j], new Point(i, j));
-            }
-        }
-        Random rand = new Random();
-        int i = 0;
-        int alea1;
-        int alea2;
-        while (i < this.nbBombe) {
-            alea1 = rand.nextInt(this.grille.getHauteur());
-            alea2 = rand.nextInt(this.grille.getLargeur());
-            if (!this.grille.getPlateau()[alea1][alea2].isEstMinee()) {
-                i++;
-                this.grille.getPlateau()[alea1][alea2].setEstMinee(true);
-            }
-        }
+    public int getPX() {
+        return this.p.getX();
     }
 
-    // exécutée à l'initialisation
-// Met à jour le nombre de voisins
-    public void updateVoisins() {
-        int compteur = 0;
-        for (int i = 0; i < this.grille.getHauteur(); i++) {
-            for (int j = 0; j < this.grille.getLargeur(); j++) {
-                compteur = 0;
-                ArrayList<Case> voisins = this.getVoisins(this.grille.getPlateau()[i][j]);
-                for (Case c : voisins) {
-                    if (c.isEstMinee()) {
-                        compteur++;
-                    }
-                }
-                this.grille.getPlateau()[i][j].setNbBombesAutour(compteur);
-            }
-        }
+    public int getPY() {
+        return this.p.getY();
     }
 
-    // Retourne la liste des cases voisine
-    public ArrayList<Case> getVoisins(Case maCase) {
-        ArrayList<Case> listeVoisins = new ArrayList<Case>();
-        Point point = this.grille.getCorrespondance().get(maCase);
-        if (point.getX() != 0) {
-            listeVoisins.add(this.grille.getPlateau()[point.getX() - 1][point.getY()]);
-            if (point.getY() != 0) {
-                listeVoisins.add(this.grille.getPlateau()[point.getX() - 1][point.getY() - 1]);
-            }
-            if (point.getY() != this.grille.getLargeur() - 1) {
-                listeVoisins.add(this.grille.getPlateau()[point.getX() - 1][point.getY() + 1]);
-            }
-        }
-        if (point.getX() != this.grille.getHauteur() - 1) {
-            listeVoisins.add(this.grille.getPlateau()[point.getX() + 1][point.getY()]);
-            if (point.getY() != 0) {
-                listeVoisins.add(this.grille.getPlateau()[point.getX() + 1][point.getY() - 1]);
-            }
-            if (point.getY() != this.grille.getLargeur() - 1) {
-                listeVoisins.add(this.grille.getPlateau()[point.getX() + 1][point.getY() + 1]);
-            }
-        }
-        if (point.getY() != 0) {
-            listeVoisins.add(this.grille.getPlateau()[point.getX()][point.getY() - 1]);
-        }
-        if (point.getY() != this.grille.getLargeur() - 1) {
-            listeVoisins.add(this.grille.getPlateau()[point.getX()][point.getY() + 1]);
-        }
-        return listeVoisins;
+    public void deplacementGauche() {
+        this.p.deplacementGauche();
+        this.setChanged();
+        this.notifyObservers();
     }
 
-    public int getCompteurBombe() {
-        return compteurBombe;
+    public void deplacementBas() {
+        this.p.deplacementBas();
+        this.setChanged();
+        this.notifyObservers();
     }
 
-    public Grille getGrille() {
-        return grille;
+    public void deplacementDroite() {
+        this.p.deplacementDroite();
+        this.setChanged();
+        this.notifyObservers();
     }
 
+    public void deplacementHaut() {
+        this.p.deplacementHaut();
+        this.setChanged();
+        this.notifyObservers();
+    }
 }

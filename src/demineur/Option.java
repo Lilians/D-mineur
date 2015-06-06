@@ -1,18 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package demineur;
 
 import demineur.Model.Game;
 import demineur.VueControlleur.GameGraph;
 import javax.swing.JFrame;
-import javax.swing.WindowConstants;
 
 /**
  *
- * @author HP
+ * @author CLARAS Damien et BEGOU Sylvain
  */
 public class Option extends javax.swing.JFrame {
 
@@ -20,7 +14,7 @@ public class Option extends javax.swing.JFrame {
     private GameGraph gameGraph;
 
     /**
-     * Creates new form Option
+     * Crée un nouveau form Option
      */
     public Option(Game game, GameGraph gameGraph) {
         super();

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package demineur;
 
 import demineur.Model.Game;
@@ -11,7 +6,7 @@ import javax.swing.SwingUtilities;
 
 /**
  *
- * @author HP
+ * @author CLARAS Damien et BEGOU Sylvain
  */
 public class Demineur {
 
@@ -19,10 +14,9 @@ public class Demineur {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                //On crée une nouvelle instance de JDialog
                 Game game = new Game(10, 10, 5);
                 GameGraph fenetre = new GameGraph(game);
-                fenetre.setVisible(true);//On la rend visible
+                fenetre.setVisible(true);
             }
         });
 
