@@ -4,6 +4,7 @@ import demineur.Model.Game;
 import demineur.Option;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -12,6 +13,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -21,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -30,6 +35,7 @@ import javax.swing.JPanel;
 public class GameGraph extends JFrame implements Observer {
 
     private Game game;
+    private int nbCoupJoue;
 
     /**
      * Constucteur
@@ -39,6 +45,7 @@ public class GameGraph extends JFrame implements Observer {
     public GameGraph(Game game) {
         super();
         this.game = game;
+        this.nbCoupJoue = 0;
         game.initialisationObserver(this);
         this.build();
 
@@ -78,17 +85,73 @@ public class GameGraph extends JFrame implements Observer {
             }
         });
 
-        JMenuItem mi3 = new JMenuItem("Aide");
+        JMenuItem mi3 = new JMenuItem("Regarder les statistiques des dernières parties jouées");
         mi3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                javax.swing.JOptionPane.showMessageDialog(null, "<html><body width='" + Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2 + "'> Jeu de démineur classique. Vous pouvez aussi jouer avec un personnage en le controlant avec les touches directionnelles du clavier. Pour commencer à jouer le personnage, appuyez sur  la fleche de droite ou cliquez sur une case");
+                Desktop d = Desktop.getDesktop();
+                try {
+                    d.open(new File("./Stats.txt"));
+                } catch (UnsupportedOperationException e) {
+                    javax.swing.JOptionPane.showMessageDialog(null, "Votre system n'est pas assez récent pour supporter cette fonctionnalité.", "Erreur", JOptionPane.WARNING_MESSAGE);
+                } catch (IOException e) {
+                    javax.swing.JOptionPane.showMessageDialog(null, "Il y'a eu un problème lors de l'ouverture du fichier avec votre logiciel par défaut.", "Erreur", JOptionPane.WARNING_MESSAGE);
+                } catch (IllegalArgumentException e) {
+                    try {
+                        File ff = new File("./Stats.txt");
+                        ff.createNewFile();
+                        FileWriter ffw = new FileWriter(ff);
+                        ffw.write("");
+                        ffw.close();
+                        this.actionPerformed(ae);
+                    } catch (Exception e2) {
+                        javax.swing.JOptionPane.showMessageDialog(null, "Un problème est survenu lors de la création du fichier de statistiques.", "Erreur", JOptionPane.WARNING_MESSAGE);
+                    }
+                } catch (Exception e) {
+                    javax.swing.JOptionPane.showMessageDialog(null, "Un problème est survenu.", "Erreur", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        }
+        );
+
+        JMenuItem mi4 = new JMenuItem("Effacer les statistiques de dernières parties");
+        mi4.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Confirmez la suppression des statistiques ?", "Warning", dialogButton);
+
+                if (dialogResult == JOptionPane.YES_OPTION) { //The ISSUE is here
+                    try {
+                        File ff = new File("./Stats.txt");
+                        ff.createNewFile();
+                        FileWriter ffw = new FileWriter(ff);
+                        ffw.write("");
+                        ffw.close();
+                    } catch (Exception e) {
+                        javax.swing.JOptionPane.showMessageDialog(null, "Un problème est survenu lors de la suppresion des statistiques.", "Erreur", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            }
+        }
+        );
+
+        JMenuItem mi5 = new JMenuItem("Aide");
+        mi5.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                javax.swing.JOptionPane.showMessageDialog(null, "<html><body width='" + Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2 + "'> Jeu de démineur classique. Vous pouvez aussi jouer avec un personnage en le controlant avec les touches directionnelles du clavier. Pour commencer à jouer le personnage, appuyez sur  la fleche de droite ou cliquez sur une case", "Aide", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
-        JMenuItem mi4 = new JMenuItem("Credits");
-        mi4.addActionListener(new ActionListener() {
+        JMenuItem mi6 = new JMenuItem("Credits");
+        mi6.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                javax.swing.JOptionPane.showMessageDialog(null, "<html><body width='" + Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2 + "'> Jeu réalisé par CLARAS DAMIEN et BEGOU Sylvain en java, durant leurs première année du cycle ingénieur à l'école Polytech Lyon");
+                javax.swing.JOptionPane.showMessageDialog(null, "<html><body width='" + Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2 + "'> Jeu réalisé par CLARAS DAMIEN et BEGOU Sylvain en java, durant leurs première année du cycle ingénieur à l'école Polytech Lyon", "Crédits", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        JMenuItem mi7 = new JMenuItem("Quitter");
+        mi7.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                dispose();
             }
         });
 
@@ -96,6 +159,9 @@ public class GameGraph extends JFrame implements Observer {
         m.add(mi2);
         m.add(mi3);
         m.add(mi4);
+        m.add(mi5);
+        m.add(mi6);
+        m.add(mi7);
 
         jm.add(m);
 
@@ -155,23 +221,42 @@ public class GameGraph extends JFrame implements Observer {
     @Override
     public void update(Observable o, Object arg) {
 
+        nbCoupJoue++;
         affichage();
         if (arg instanceof Boolean) {
+            nbCoupJoue--;
             if ((Boolean) arg == true) {
-                javax.swing.JOptionPane.showMessageDialog(null, "Boom ! Vous avez perdu !");
+                javax.swing.JOptionPane.showMessageDialog(null, "Boom ! Vous avez perdu !", "Defaite !", JOptionPane.PLAIN_MESSAGE);
             } else {
-                javax.swing.JOptionPane.showMessageDialog(null, "Pas de boom ! Vous avez gagné !");
+                javax.swing.JOptionPane.showMessageDialog(null, "Pas de boom ! Vous avez gagné !", "Victoire !", JOptionPane.PLAIN_MESSAGE);
             }
-            game.recommencer();
+            try {
+                File ff = new File("./Stats.txt");
+                ff.createNewFile();
+                FileWriter ffw = new FileWriter(ff, true);
+                String s = "";
+                String c = " " + this.nbCoupJoue + " ";
+                if ((Boolean) arg == true) {
+                    s += " perdue ";
+                } else {
+                    s += " gagnée ";
+                }
+                ffw.write("" + System.getProperty("line.separator") + "Partie" + s + "en" + c + "coups. Largeur de la grille : " + this.game.getGrille().getLargeur() + ". Hauteur de la grille : " + this.game.getGrille().getHauteur() + ". Nombre de mine : " + this.game.getNbBombes() + ".");
+                ffw.close();
+            } catch (Exception e) {
+                javax.swing.JOptionPane.showMessageDialog(null, "Un problème est survenu lors de l'enregistrement des statistiques de la partie.");
+            }
             reinit();
             affichage();
         }
+
     }
 
     /**
      * Reconstruit la fenetre de jeu
      */
     public void reinit() {
+        this.nbCoupJoue = 0;
         this.getContentPane().remove(0);
         this.getContentPane().remove(0);
         this.game.recommencer();
@@ -187,7 +272,6 @@ public class GameGraph extends JFrame implements Observer {
         but.setEnabled(true);
         add(pan, BorderLayout.CENTER);
         add(but, BorderLayout.NORTH);
-
     }
 
     /**

@@ -52,6 +52,10 @@ public class Game extends Observable {
         return grille;
     }
 
+    public int getNbBombes() {
+        return this.nbBombe;
+    }
+
     /**
      * Initialisation de l'observer
      *
