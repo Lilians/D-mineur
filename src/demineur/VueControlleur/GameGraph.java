@@ -9,6 +9,7 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
@@ -70,7 +71,6 @@ public class GameGraph extends JFrame implements Observer {
         JMenuItem mi = new JMenuItem("Recommencer");
         mi.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                game.recommencer();
                 reinit();
                 affichage();
             }
@@ -185,15 +185,7 @@ public class GameGraph extends JFrame implements Observer {
         add(pan, BorderLayout.CENTER);
         add(but, BorderLayout.NORTH);
 
-        addKeyListener(new KeyListener() {
-
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-            }
+        addKeyListener(new KeyAdapter() {
 
             @Override
             public void keyReleased(KeyEvent e) {
