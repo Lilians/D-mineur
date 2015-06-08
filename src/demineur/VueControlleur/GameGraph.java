@@ -113,13 +113,13 @@ public class GameGraph extends JFrame implements Observer {
         }
         );
 
-        JMenuItem mi4 = new JMenuItem("Effacer les statistiques de dernières parties");
+        JMenuItem mi4 = new JMenuItem("Effacer les statistiques des dernières parties");
         mi4.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 int dialogButton = JOptionPane.YES_NO_OPTION;
                 int dialogResult = JOptionPane.showConfirmDialog(null, "Confirmez la suppression des statistiques ?", "Warning", dialogButton);
 
-                if (dialogResult == JOptionPane.YES_OPTION) { //The ISSUE is here
+                if (dialogResult == JOptionPane.YES_OPTION) {
                     try {
                         File ff = new File("./Stats.txt");
                         ff.createNewFile();
@@ -137,14 +137,14 @@ public class GameGraph extends JFrame implements Observer {
         JMenuItem mi5 = new JMenuItem("Aide");
         mi5.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                javax.swing.JOptionPane.showMessageDialog(null, "<html><body width='" + Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2 + "'> Jeu de démineur classique. Vous pouvez aussi jouer avec un personnage en le controlant avec les touches directionnelles du clavier. Pour commencer à jouer le personnage, appuyez sur  la fleche de droite ou cliquez sur une case", "Aide", JOptionPane.INFORMATION_MESSAGE);
+                javax.swing.JOptionPane.showMessageDialog(null, "<html><body width='" + Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2 + "'> Jeu de démineur classique. Vous pouvez aussi jouer avec un personnage en le contrôlant avec les touches directionnelles du clavier. Pour commencer à jouer le personnage, appuyez sur  la flèche de droite ou cliquez sur une case", "Aide", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
-        JMenuItem mi6 = new JMenuItem("Credits");
+        JMenuItem mi6 = new JMenuItem("Crédits");
         mi6.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                javax.swing.JOptionPane.showMessageDialog(null, "<html><body width='" + Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2 + "'> Jeu réalisé par CLARAS DAMIEN et BEGOU Sylvain en java, durant leurs première année du cycle ingénieur à l'école Polytech Lyon", "Crédits", JOptionPane.INFORMATION_MESSAGE);
+                javax.swing.JOptionPane.showMessageDialog(null, "<html><body width='" + Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2 + "'> Jeu réalisé par CLARAS Damien et BEGOU Sylvain en java, durant leur première année du cycle ingénieur à l'école Polytech Lyon", "Crédits", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -179,7 +179,7 @@ public class GameGraph extends JFrame implements Observer {
             }
         }
 
-        JComponent but = new JLabel("Nombre de Mine : ");
+        JComponent but = new JLabel("Nombre de Mine(s) : ");
         ((JLabel) but).setText(((JLabel) but).getText() + game.getCompteurBombe());
 
         add(pan, BorderLayout.CENTER);
@@ -233,7 +233,7 @@ public class GameGraph extends JFrame implements Observer {
                 } else {
                     s += " gagnée ";
                 }
-                ffw.write("" + System.getProperty("line.separator") + "Partie" + s + "en" + c + "coups. Largeur de la grille : " + this.game.getGrille().getLargeur() + ". Hauteur de la grille : " + this.game.getGrille().getHauteur() + ". Nombre de mine : " + this.game.getNbBombes() + ".");
+                ffw.write("" + System.getProperty("line.separator") + "Partie" + s + "en" + c + "coup(s). Largeur de la grille : " + this.game.getGrille().getLargeur() + ". Hauteur de la grille : " + this.game.getGrille().getHauteur() + ". Nombre de mine(s) : " + this.game.getNbBombes() + ".");
                 ffw.close();
             } catch (Exception e) {
                 javax.swing.JOptionPane.showMessageDialog(null, "Un problème est survenu lors de l'enregistrement des statistiques de la partie.");
@@ -260,7 +260,7 @@ public class GameGraph extends JFrame implements Observer {
                 pan.add(ptest);
             }
         }
-        JComponent but = new JLabel("Nombre de Mine : " + game.getCompteurBombe());
+        JComponent but = new JLabel("Nombre de Mine(s) : " + game.getCompteurBombe());
         but.setEnabled(true);
         add(pan, BorderLayout.CENTER);
         add(but, BorderLayout.NORTH);
@@ -270,7 +270,7 @@ public class GameGraph extends JFrame implements Observer {
      * Affiche le jeu dans la fentre de jeu
      */
     public void affichage() {
-        ((JLabel) this.getContentPane().getComponent(1)).setText("Nombre de Mine : " + game.getCompteurBombe());
+        ((JLabel) this.getContentPane().getComponent(1)).setText("Nombre de Mine(s) : " + game.getCompteurBombe());
 
         for (int i = 0; i < game.getGrille().getHauteur(); i++) {
             for (int j = 0; j < game.getGrille().getLargeur(); j++) {
