@@ -241,7 +241,8 @@ public class Game extends Observable {
             this.compteurBombe++;
             this.compteurCaseAction--;
         }
-        if (this.compteurCaseAction == this.grille.getLargeur() * this.grille.getHauteur() && this.compteurBombe == 0) {
+        if ((this.compteurCaseAction == this.grille.getLargeur() * this.grille.getHauteur() && this.compteurBombe == 0)
+                || (this.compteurCaseAction == this.grille.getLargeur() * this.grille.getHauteur() - this.nbBombe && this.compteurBombe == this.nbBombe)) {
             this.setChanged();
             this.notifyObservers(false);
         } else {
