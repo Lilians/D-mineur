@@ -57,7 +57,7 @@ public class CaseGraph extends JPanel {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 super.mouseClicked(arg0);
-                if (arg0.getButton() == MouseEvent.BUTTON1 && !myCase.isDrapeau() && !myCase.isEstVisible()) {
+                if (arg0.getButton() == MouseEvent.BUTTON1 && !myCase.isDrapeau()) {
                     game.actionSurLaCase(myCase);
                 } else if (arg0.getButton() == MouseEvent.BUTTON3 && !myCase.isEstVisible()) {
                     game.drapeauSurLaCase(myCase);

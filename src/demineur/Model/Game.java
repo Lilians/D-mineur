@@ -180,24 +180,44 @@ public class Game extends Observable {
     public void actionSurLaCase(Case maCase) {
         this.p.setX(this.grille.getPoint(maCase).getX());
         this.p.setY(this.grille.getPoint(maCase).getY());
-        if (maCase.isEstMinee()) {
-            maCase.action();
-            this.setChanged();
-            this.notifyObservers(true);
-        } else if (maCase.getNbBombesAutour() == 0) {
-            this.etendreCase(maCase);
+        if (maCase.isEstVisible()) {
+            int nbDrapeau = 0;
+            ArrayList<Case> voisins = this.getVoisins(maCase);
+
+            for (int i = 0; i < voisins.size(); i++) {
+                if (voisins.get(i).isDrapeau()) {
+                    nbDrapeau++;
+                }
+            }
+            if (nbDrapeau == maCase.getNbBombesAutour()) {
+                for (int i = 0; i < voisins.size(); i++) {
+                    if (!voisins.get(i).isEstVisible() && !voisins.get(i).isDrapeau()) {
+                        this.actionSurLaCase(voisins.get(i));
+                    }
+                }
+            }
             this.setChanged();
             this.notifyObservers();
+
         } else {
-            maCase.action();
-            this.compteurCaseAction++;
-            this.setChanged();
-            this.notifyObservers();
-        }
-        if ((this.compteurCaseAction == this.grille.getLargeur() * this.grille.getHauteur() && this.compteurBombe == 0)
-                || (this.compteurCaseAction == this.grille.getLargeur() * this.grille.getHauteur() - this.nbBombe && this.compteurBombe == this.nbBombe)) {
-            this.setChanged();
-            this.notifyObservers(false);
+            if (maCase.isEstMinee()) {
+                maCase.action();
+                this.setChanged();
+                this.notifyObservers(true);
+            } else if (maCase.getNbBombesAutour() == 0) {
+                this.etendreCase(maCase);
+                this.setChanged();
+                this.notifyObservers();
+            } else {
+                maCase.action();
+                this.compteurCaseAction++;
+                this.setChanged();
+                this.notifyObservers();
+            }
+            if (this.compteurCaseAction + this.compteurBombe == this.grille.getLargeur() * this.grille.getHauteur()) {
+                this.setChanged();
+                this.notifyObservers(false);
+            }
         }
     }
 
@@ -241,8 +261,7 @@ public class Game extends Observable {
             this.compteurBombe++;
             this.compteurCaseAction--;
         }
-        if ((this.compteurCaseAction == this.grille.getLargeur() * this.grille.getHauteur() && this.compteurBombe == 0)
-                || (this.compteurCaseAction == this.grille.getLargeur() * this.grille.getHauteur() - this.nbBombe && this.compteurBombe == this.nbBombe)) {
+        if (this.compteurCaseAction + this.compteurBombe == this.grille.getLargeur() * this.grille.getHauteur()) {
             this.setChanged();
             this.notifyObservers(false);
         } else {
