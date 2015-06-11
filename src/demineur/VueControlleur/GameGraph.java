@@ -261,7 +261,6 @@ public class GameGraph extends JFrame implements Observer {
             }
         }
         JComponent but = new JLabel("Nombre de Mine(s) : " + game.getCompteurBombe());
-        but.setEnabled(true);
         add(pan, BorderLayout.CENTER);
         add(but, BorderLayout.NORTH);
     }

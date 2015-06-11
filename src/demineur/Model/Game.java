@@ -16,6 +16,7 @@ public class Game extends Observable {
     private Grille grille;
     private int compteurCaseAction;
     private Personnage p;
+    private boolean premierCoup;
 
     /**
      * Constructeur
@@ -29,6 +30,7 @@ public class Game extends Observable {
         this.grille = new Grille(hauteur, largeur);
         this.compteurCaseAction = 0;
         this.compteurBombe = this.nbBombe;
+        this.premierCoup = true;
         this.genererPlateau();
         this.updateVoisins();
         this.p = new Personnage(0, -1, this);
@@ -87,6 +89,7 @@ public class Game extends Observable {
         this.updateVoisins();
         this.compteurCaseAction = 0;
         this.compteurBombe = this.nbBombe;
+        this.premierCoup = true;
 
         this.p.setX(0);
         this.p.setY(-1);
@@ -178,6 +181,22 @@ public class Game extends Observable {
      * @param maCase
      */
     public void actionSurLaCase(Case maCase) {
+        if (this.premierCoup && maCase.isEstMinee()) {
+            boolean worked = false;
+            int alea1;
+            int alea2;
+            Random rand = new Random();
+            while (!worked) {
+                alea1 = rand.nextInt(this.grille.getHauteur());
+                alea2 = rand.nextInt(this.grille.getLargeur());
+                if (!this.grille.getCaseAt(alea1, alea2).isEstMinee() && this.grille.getPoint(maCase).getX() != alea1 && this.grille.getPoint(maCase).getY() != alea2) {
+                    this.grille.getCaseAt(alea1, alea2).setEstMinee(true);
+                    worked = true;
+                }
+            }
+            this.premierCoup = false;
+            maCase.setEstMinee(false);
+        }
         this.p.setX(this.grille.getPoint(maCase).getX());
         this.p.setY(this.grille.getPoint(maCase).getY());
         if (maCase.isEstVisible()) {
@@ -214,7 +233,7 @@ public class Game extends Observable {
                 this.setChanged();
                 this.notifyObservers();
             }
-            if (this.compteurCaseAction + this.compteurBombe == this.grille.getLargeur() * this.grille.getHauteur()) {
+            if (!maCase.isEstMinee() && this.compteurCaseAction + this.compteurBombe == this.grille.getLargeur() * this.grille.getHauteur()) {
                 this.setChanged();
                 this.notifyObservers(false);
             }

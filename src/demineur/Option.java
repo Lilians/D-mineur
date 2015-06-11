@@ -272,6 +272,9 @@ public class Option extends javax.swing.JFrame {
         if (Integer.parseInt(this.jSpinner1.getValue().toString()) <= 1) {
             this.jSpinner1.setValue(1);
         }
+        if (((int) this.jSpinner2.getValue()) >= 40) {
+            this.jSpinner1.setValue(40);
+        }
 
         if (((int) this.jSpinner3.getValue()) > ((int) this.jSpinner1.getValue()) * ((int) this.jSpinner2.getValue())) {
             this.jSpinner3.setValue(((int) this.jSpinner1.getValue()) * ((int) this.jSpinner2.getValue()));
@@ -281,6 +284,9 @@ public class Option extends javax.swing.JFrame {
     private void jSpinner2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner2StateChanged
         if (((int) this.jSpinner2.getValue()) <= 1) {
             this.jSpinner2.setValue(1);
+        }
+        if (((int) this.jSpinner2.getValue()) >= 40) {
+            this.jSpinner2.setValue(40);
         }
 
         if (((int) this.jSpinner3.getValue()) > ((int) this.jSpinner1.getValue()) * ((int) this.jSpinner2.getValue())) {
@@ -292,8 +298,8 @@ public class Option extends javax.swing.JFrame {
         if (((int) this.jSpinner3.getValue()) < 0) {
             this.jSpinner3.setValue(0);
 
-        } else if (((int) this.jSpinner3.getValue()) > ((int) this.jSpinner1.getValue()) * ((int) this.jSpinner2.getValue())) {
-            this.jSpinner3.setValue(((int) this.jSpinner1.getValue()) * ((int) this.jSpinner2.getValue()));
+        } else if (((int) this.jSpinner3.getValue()) > ((int) this.jSpinner1.getValue()) * ((int) this.jSpinner2.getValue()) - 1) {
+            this.jSpinner3.setValue(((int) this.jSpinner1.getValue()) * ((int) this.jSpinner2.getValue()) - 1);
         }
     }//GEN-LAST:event_jSpinner3StateChanged
 
