@@ -128,7 +128,7 @@ public class Game extends Observable {
         for (int i = 0; i < this.grille.getHauteur(); i++) {
             for (int j = 0; j < this.grille.getLargeur(); j++) {
                 compteur = 0;
-                ArrayList<Case> voisins = this.getVoisins(this.grille.getCaseAt(i, j));
+                ArrayList<Case> voisins = this.grille.getVoisins(this.grille.getCaseAt(i, j));
                 for (Case c : voisins) {
                     if (c.isEstMinee()) {
                         compteur++;
@@ -137,42 +137,6 @@ public class Game extends Observable {
                 this.grille.getCaseAt(i, j).setNbBombesAutour(compteur);
             }
         }
-    }
-
-    /**
-     * Retourne les voisins d'une case
-     *
-     * @param maCase
-     * @return
-     */
-    public ArrayList<Case> getVoisins(Case maCase) {
-        ArrayList<Case> listeVoisins = new ArrayList<Case>();
-        Point point = this.grille.getPoint(maCase);
-        if (point.getX() != 0) {
-            listeVoisins.add(this.grille.getCaseAt(point.getX() - 1, point.getY()));
-            if (point.getY() != 0) {
-                listeVoisins.add(this.grille.getCaseAt(point.getX() - 1, point.getY() - 1));
-            }
-            if (point.getY() != this.grille.getLargeur() - 1) {
-                listeVoisins.add(this.grille.getCaseAt(point.getX() - 1, point.getY() + 1));
-            }
-        }
-        if (point.getX() != this.grille.getHauteur() - 1) {
-            listeVoisins.add(this.grille.getCaseAt(point.getX() + 1, point.getY()));
-            if (point.getY() != 0) {
-                listeVoisins.add(this.grille.getCaseAt(point.getX() + 1, point.getY() - 1));
-            }
-            if (point.getY() != this.grille.getLargeur() - 1) {
-                listeVoisins.add(this.grille.getCaseAt(point.getX() + 1, point.getY() + 1));
-            }
-        }
-        if (point.getY() != 0) {
-            listeVoisins.add(this.grille.getCaseAt(point.getX(), point.getY() - 1));
-        }
-        if (point.getY() != this.grille.getLargeur() - 1) {
-            listeVoisins.add(this.grille.getCaseAt(point.getX(), point.getY() + 1));
-        }
-        return listeVoisins;
     }
 
     /**
@@ -205,7 +169,7 @@ public class Game extends Observable {
         this.p.setY(this.grille.getPoint(maCase).getY());
         if (maCase.isEstVisible()) {
             int nbDrapeau = 0;
-            ArrayList<Case> voisins = this.getVoisins(maCase);
+            ArrayList<Case> voisins = this.grille.getVoisins(maCase);
 
             for (int i = 0; i < voisins.size(); i++) {
                 if (voisins.get(i).isDrapeau()) {
@@ -254,7 +218,7 @@ public class Game extends Observable {
         if (maCase.getNbBombesAutour() == 0) {
             maCase.action();
             this.compteurCaseAction++;
-            ArrayList<Case> voisins = this.getVoisins(maCase);
+            ArrayList<Case> voisins = this.grille.getVoisins(maCase);
 
             for (int i = 0; i < voisins.size(); i++) {
                 if (!voisins.get(i).isEstVisible() && !voisins.get(i).isDrapeau()) {

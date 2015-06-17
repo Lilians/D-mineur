@@ -1,5 +1,6 @@
 package demineur.Model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -74,6 +75,42 @@ public class Grille {
     public void nouvelleCaseAt(int x, int y) {
         this.plateau[x][y] = new Case(false, false, 0, false);
         this.correspondance.put(this.getCaseAt(x, y), new Point(x, y));
+    }
+
+    /**
+     * Retourne les voisins d'une case
+     *
+     * @param maCase
+     * @return
+     */
+    public ArrayList<Case> getVoisins(Case maCase) {
+        ArrayList<Case> listeVoisins = new ArrayList<Case>();
+        Point point = this.getPoint(maCase);
+        if (point.getX() != 0) {
+            listeVoisins.add(this.getCaseAt(point.getX() - 1, point.getY()));
+            if (point.getY() != 0) {
+                listeVoisins.add(this.getCaseAt(point.getX() - 1, point.getY() - 1));
+            }
+            if (point.getY() != this.getLargeur() - 1) {
+                listeVoisins.add(this.getCaseAt(point.getX() - 1, point.getY() + 1));
+            }
+        }
+        if (point.getX() != this.getHauteur() - 1) {
+            listeVoisins.add(this.getCaseAt(point.getX() + 1, point.getY()));
+            if (point.getY() != 0) {
+                listeVoisins.add(this.getCaseAt(point.getX() + 1, point.getY() - 1));
+            }
+            if (point.getY() != this.getLargeur() - 1) {
+                listeVoisins.add(this.getCaseAt(point.getX() + 1, point.getY() + 1));
+            }
+        }
+        if (point.getY() != 0) {
+            listeVoisins.add(this.getCaseAt(point.getX(), point.getY() - 1));
+        }
+        if (point.getY() != this.getLargeur() - 1) {
+            listeVoisins.add(this.getCaseAt(point.getX(), point.getY() + 1));
+        }
+        return listeVoisins;
     }
 
 }
