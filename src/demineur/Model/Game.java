@@ -181,21 +181,25 @@ public class Game extends Observable {
      * @param maCase
      */
     public void actionSurLaCase(Case maCase) {
-        if (this.premierCoup && maCase.isEstMinee()) {
-            boolean worked = false;
-            int alea1;
-            int alea2;
-            Random rand = new Random();
-            while (!worked) {
-                alea1 = rand.nextInt(this.grille.getHauteur());
-                alea2 = rand.nextInt(this.grille.getLargeur());
-                if (!this.grille.getCaseAt(alea1, alea2).isEstMinee() && this.grille.getPoint(maCase).getX() != alea1 && this.grille.getPoint(maCase).getY() != alea2) {
-                    this.grille.getCaseAt(alea1, alea2).setEstMinee(true);
-                    worked = true;
-                }
-            }
+        if (this.premierCoup) {
             this.premierCoup = false;
-            maCase.setEstMinee(false);
+            if (maCase.isEstMinee()) {
+                boolean worked = false;
+                int alea1;
+                int alea2;
+                Random rand = new Random();
+                while (!worked) {
+                    alea1 = rand.nextInt(this.grille.getHauteur());
+                    alea2 = rand.nextInt(this.grille.getLargeur());
+                    if (!this.grille.getCaseAt(alea1, alea2).isEstMinee() && this.grille.getPoint(maCase).getX() != alea1 && this.grille.getPoint(maCase).getY() != alea2) {
+                        this.grille.getCaseAt(alea1, alea2).setEstMinee(true);
+                        worked = true;
+                    }
+                }
+                this.premierCoup = false;
+                maCase.setEstMinee(false);
+                updateVoisins();
+            }
         }
         this.p.setX(this.grille.getPoint(maCase).getX());
         this.p.setY(this.grille.getPoint(maCase).getY());
