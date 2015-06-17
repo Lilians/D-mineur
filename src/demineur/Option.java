@@ -298,8 +298,8 @@ public class Option extends javax.swing.JFrame {
         if (((int) this.jSpinner3.getValue()) < 0) {
             this.jSpinner3.setValue(0);
 
-        } else if (((int) this.jSpinner3.getValue()) > ((int) this.jSpinner1.getValue()) * ((int) this.jSpinner2.getValue()) - 1) {
-            this.jSpinner3.setValue(((int) this.jSpinner1.getValue()) * ((int) this.jSpinner2.getValue()) - 1);
+        } else if (((int) this.jSpinner3.getValue()) > ((int) this.jSpinner1.getValue()) * ((int) this.jSpinner2.getValue()) - 5) {
+            this.jSpinner3.setValue(((int) this.jSpinner1.getValue()) * ((int) this.jSpinner2.getValue()) - 5);
         }
     }//GEN-LAST:event_jSpinner3StateChanged
 
